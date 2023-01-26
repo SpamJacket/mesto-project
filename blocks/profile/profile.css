@@ -1,0 +1,23 @@
+.profile {
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  row-gap: 26px;
+  color: #fff;
+}
+
+/* @media screen and (max-width: 320px) {
+  .profile {
+    flex-wrap: nowrap;
+    flex-direction: column;
+  }
+} */
+
+@media screen and (max-width: 456px) {
+  .profile {
+    flex-wrap: nowrap;
+    flex-direction: column;
+  }
+}

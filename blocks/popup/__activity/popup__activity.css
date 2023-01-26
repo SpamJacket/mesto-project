@@ -1,0 +1,16 @@
+.popup__activity {
+  width: 100%;
+  font-family: inherit;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  padding: 0;
+  padding-bottom: 13px;
+  border: none;
+  border-bottom: rgb(0, 0, 0, .2) 1px solid;
+  margin-top: 30px;
+}
+
+.popup__activity:focus {
+  outline: none;
+}

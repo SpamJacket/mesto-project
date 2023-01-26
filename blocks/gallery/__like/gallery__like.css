@@ -1,0 +1,11 @@
+.gallery__like {
+  display: block;
+  justify-self: start;
+  width: 22px;
+  height: 19px;
+  background-image: url("../../../images/like-disabled.svg");
+}
+
+.gallery__like:hover {
+  opacity: .5;
+}

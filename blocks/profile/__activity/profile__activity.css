@@ -1,0 +1,25 @@
+.profile__activity {
+  margin: 0;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+  grid-column: span 2;
+}
+
+/* @media screen and (max-width: 320px) {
+  .profile__activity {
+    font-size: 14px;
+    line-height: 17px;
+    grid-column: span 2;
+    text-align: center;
+  }
+} */
+
+@media screen and (max-width: 456px) {
+  .profile__activity {
+    font-size: 14px;
+    line-height: 17px;
+    grid-column: span 2;
+    text-align: center;
+  }
+}
