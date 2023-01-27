@@ -13,7 +13,6 @@
   .profile__activity {
     font-size: 14px;
     line-height: 17px;
-    grid-column: span 2;
     text-align: center;
   }
 }
