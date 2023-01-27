@@ -5,20 +5,16 @@
   background-position: 0 15px;
   background-repeat: no-repeat;
   background-color: transparent;
+  cursor: pointer;
 }
 
 .profile__edit-button:hover {
   opacity: .6;
 }
 
-/* @media screen and (max-width: 320px) {
+@media screen and (max-width: 540px) {
   .profile__edit-button {
     background-position: 0 8px;
-  }
-} */
-
-@media screen and (max-width: 456px) {
-  .profile__edit-button {
-    background-position: 0 8px;
+    background-size: 16px;
   }
 }

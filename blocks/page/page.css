@@ -5,9 +5,10 @@
   display: grid;
   justify-items: center;
   padding: 45px calc(200/1280*100%) 60px;
+  min-height: 100vh;
 }
 
-@media screen and (max-width: 456px) {
+@media screen and (max-width: 540px) {
   .page {
     padding: 28px calc(19/320*100%) 36px;
   }

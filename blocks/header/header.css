@@ -2,11 +2,11 @@
   box-sizing: border-box;
   max-width: 880px;
   width: 100%;
-  border-bottom: #545454 1px solid;
+  border-bottom: rgb(84, 84, 84, .7) 1px solid;
   padding-bottom: 41px;
 }
 
-@media screen and (max-width: 320px) {
+@media screen and (max-width: 540px) {
   .header {
     padding-bottom: 31.6px;
   }

@@ -1,14 +1,14 @@
-.popup__name {
+.popup__input {
   padding: 0;
   border: none;
   font-family: inherit;
   font-weight: 400;
   font-size: 14px;
   line-height: 17px;
-  padding-bottom: 13px;
+  padding-bottom: 10px;
   border-bottom: rgb(0, 0, 0, .2) 1px solid;
 }
 
-.popup__name:focus {
+.popup__input:focus {
   outline: none;
 }

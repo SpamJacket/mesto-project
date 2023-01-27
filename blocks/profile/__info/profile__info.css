@@ -6,22 +6,9 @@
   margin-right: 30px;
 }
 
-/* @media screen and (max-width: 456px) {
+@media screen and (max-width: 540px) {
   .profile__info {
-    margin: 0;
-  }
-}
-
-@media screen and (max-width: 320px) {
-  .profile__info {
-    grid-template-columns: 189px 24px;
-    column-gap: 10px;
-  }
-} */
-
-@media screen and (max-width: 456px) {
-  .profile__info {
-    grid-template-columns: 189px 24px;
+    grid-template-columns: 189px 16px;
     column-gap: 10px;
     margin: 0;
   }

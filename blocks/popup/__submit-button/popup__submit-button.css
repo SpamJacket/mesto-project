@@ -3,7 +3,7 @@
   height: 50px;
   padding: 0;
   border: none;
-  margin-top: 48px;
+  margin-top: 18px;
   display: block;
   color: #fff;
   font-family: inherit;
@@ -12,25 +12,17 @@
   text-align: center;
   background-color: #000;
   border-radius: 2px;
+  cursor: pointer;
 }
 
-@media screen and (max-width: 456px) {
+@media screen and (max-width: 540px) {
   .popup__submit-button {
-    margin-top: 45px;
+    margin-top: 15px;
     height: 46px;
     font-size: 14px;
     line-height: 17px;
   }
 }
-
-/* @media screen and (max-width: 320px) {
-  .popup__submit-button {
-    margin-top: 45px;
-    height: 46px;
-    font-size: 14px;
-    line-height: 17px;
-  }
-} */
 
 .popup__submit-button:hover {
   opacity: .8;

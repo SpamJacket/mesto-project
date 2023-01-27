@@ -8,14 +8,7 @@
   color: #fff;
 }
 
-/* @media screen and (max-width: 320px) {
-  .profile {
-    flex-wrap: nowrap;
-    flex-direction: column;
-  }
-} */
-
-@media screen and (max-width: 456px) {
+@media screen and (max-width: 540px) {
   .profile {
     flex-wrap: nowrap;
     flex-direction: column;
