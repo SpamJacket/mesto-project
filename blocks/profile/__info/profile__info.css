@@ -7,8 +7,12 @@
 }
 
 @media screen and (max-width: 540px) {
+  .profile__info::before {
+    content: "";
+  }
+
   .profile__info {
-    grid-template-columns: 189px 16px;
+    grid-template-columns: 16px 189px 16px;
     column-gap: 10px;
     margin: 0;
   }

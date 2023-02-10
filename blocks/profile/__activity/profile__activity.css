@@ -11,6 +11,7 @@
 
 @media screen and (max-width: 540px) {
   .profile__activity {
+    grid-column: span 3;
     font-size: 14px;
     line-height: 17px;
     text-align: center;
