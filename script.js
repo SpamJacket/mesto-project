@@ -48,3 +48,10 @@ closeAddBtn.addEventListener('click', function () {
   let popup = page.querySelector('.popup_type_place');
   popup.style = 'visibility: hidden; opacity: 0;';
 })
+
+let like = content.querySelectorAll('.gallery__like');
+for (let i = 0; i < like.length; i++){
+  like[i].addEventListener('click', function () {
+    like[i].classList.toggle('gallery__like_active');
+  })
+}
