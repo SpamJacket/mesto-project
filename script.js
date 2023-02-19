@@ -49,6 +49,25 @@ closeAddBtn.addEventListener('click', function () {
   popup.style = 'visibility: hidden; opacity: 0;';
 })
 
+
+const image = content.querySelectorAll('.gallery__image');
+for (let i = 0; i < image.length; i++) {
+  image[i].addEventListener('click', function () {
+    let popup = page.querySelector('.popup_type_img');
+    popup.style = 'visibility: visible; opacity: 1;';
+
+    let popupImage = popup.querySelector('.popup__image');
+    popupImage.src = image[i].src;
+  })
+}
+
+const closeImgBtn = page.querySelector('.popup_type_img .popup__close-button');
+closeImgBtn.addEventListener('click', function () {
+  let popup = page.querySelector('.popup_type_img');
+  popup.style = 'visibility: hidden; opacity: 0;';
+})
+
+
 let like = content.querySelectorAll('.gallery__like');
 for (let i = 0; i < like.length; i++){
   like[i].addEventListener('click', function () {
