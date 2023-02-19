@@ -1,6 +1,46 @@
 const page = document.querySelector('.page');
 const content = page.querySelector('.content');
 
+const initialCards = [
+  {
+    name: 'Архыз',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
+  },
+  {
+    name: 'Челябинская область',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
+  },
+  {
+    name: 'Иваново',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
+  },
+  {
+    name: 'Камчатка',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
+  },
+  {
+    name: 'Холмогорский район',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
+  },
+  {
+    name: 'Байкал',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
+  }
+]
+const galleryList = content.querySelector('.gallery__list');
+
+for (let i = 0; i < initialCards.length; i++){
+  galleryList.insertAdjacentHTML('beforeend', `<li class="gallery__item">
+                                                <button class="gallery__delete-button" type="button" aria-label="Удалить"></button>
+
+                                                <img class="gallery__image" src="${initialCards[i].link}" alt="Собор в Карачаевске">
+
+                                                <h2 class="gallery__title">${initialCards[i].name}</h2>
+
+                                                <button class="gallery__like" type="button" aria-label="Лайк"></button>
+                                              </li>`)
+}
+
 const editBtn = content.querySelector('.profile__edit-button');
 
 const editForm = page.querySelector('.popup__form_type_profile');
