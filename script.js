@@ -3,6 +3,7 @@ const page = document.querySelector('.page');
 const content = page.querySelector('.content');
 
 
+
 // Создание массива объектов с названием и ссылкой для карточки
 const initialCards = [
   {
@@ -44,8 +45,9 @@ for (let i = 0; i < initialCards.length; i++){
                                                 <h2 class="gallery__title">${initialCards[i].name}</h2>
 
                                                 <button class="gallery__like" type="button" aria-label="Лайк"></button>
-                                              </li>`)
+                                              </li>`);
 }
+
 
 
 // Переменная для кнопки редактирования профиля
@@ -57,6 +59,7 @@ const namePopup = editForm.querySelector('.popup__input_text_name');
 const activityPopup = editForm.querySelector('.popup__input_text_activity');
 const nameProfile = content.querySelector('.profile__name');
 const activityProfile = content.querySelector('.profile__activity');
+
 
 // Функция подтягивания значений из профиля в попап редактирования профиля
 function autofillFormInput() {
@@ -72,6 +75,7 @@ editBtn.addEventListener('click', function () {
   autofillFormInput();
 })
 
+
 // Функция сохранения значений из попапа редактирования профиля
 function handleFormSubmit(evt) {
   evt.preventDefault();
@@ -83,6 +87,7 @@ function handleFormSubmit(evt) {
 // Добавление события кнопке сохранения попапа редактирования профиля
 editForm.addEventListener('submit', handleFormSubmit);
 
+
 // Переменная для кнопки закрытия попапа редактирования профиля
 const closeEditBtn = page.querySelector('.popup_type_profile .popup__close-button');
 // Добавление события кнопке закрытия попапа редактирования профиля
@@ -90,6 +95,7 @@ closeEditBtn.addEventListener('click', function () {
   let popup = page.querySelector('.popup_type_profile');
   popup.style = 'visibility: hidden; opacity: 0;';
 })
+
 
 
 // Переменная для кнопки добавления карточки
@@ -100,6 +106,37 @@ addBtn.addEventListener('click', function () {
   popup.style = 'visibility: visible; opacity: 1;';
 })
 
+
+// Переменные формы добавления карточки, поля заголовка и ссылки на изображение
+const addForm = page.querySelector('.popup__form_type_place');
+const titlePopup = addForm.querySelector('.popup__input_text_title');
+const linkPopup = addForm.querySelector('.popup__input_text_link');
+
+// Функция добавления карточки
+function handleFormAdded(evt) {
+  evt.preventDefault();
+
+  if (titlePopup.value !== '' && linkPopup.value !== '') {
+    initialCards[initialCards.length] = {name: `${titlePopup.value}`, link: `${linkPopup.value}`};
+
+    galleryList.insertAdjacentHTML('beforeend', `<li class="gallery__item">
+                                                  <button class="gallery__delete-button" type="button" aria-label="Удалить"></button>
+  
+                                                  <img class="gallery__image" src="${initialCards[initialCards.length - 1].link}" alt="Собор в Карачаевске">
+  
+                                                  <h2 class="gallery__title">${initialCards[initialCards.length - 1].name}</h2>
+  
+                                                  <button class="gallery__like" type="button" aria-label="Лайк"></button>
+                                                </li>`);
+    titlePopup.value = '';
+    linkPopup.value = '';  
+  }
+}
+
+// Добавление события кнопке создания карточки
+addForm.addEventListener('submit', handleFormAdded);
+
+
 // Переменная для кнопки закрытия попапа добавления карточки
 const closeAddBtn = page.querySelector('.popup_type_place .popup__close-button');
 // Добавление события кнопке закрытия попапа добавления карточки
@@ -107,6 +144,7 @@ closeAddBtn.addEventListener('click', function () {
   let popup = page.querySelector('.popup_type_place');
   popup.style = 'visibility: hidden; opacity: 0;';
 })
+
 
 
 // Переменная для всех DOM-элементов изображений в галлерее
@@ -122,6 +160,7 @@ for (let i = 0; i < image.length; i++) {
   })
 }
 
+
 // Переменная для кнопки закрытия попапа просмотра изображений
 const closeImgBtn = page.querySelector('.popup_type_img .popup__close-button');
 // Добавление события кнопке закрытия попапа просмотра изображений
@@ -129,6 +168,7 @@ closeImgBtn.addEventListener('click', function () {
   let popup = page.querySelector('.popup_type_img');
   popup.style = 'visibility: hidden; opacity: 0;';
 })
+
 
 
 // Переменная для всех DOM-элементов лайков всех карточек
