@@ -151,8 +151,9 @@ closeAddBtn.addEventListener('click', function () {
 
 
 
-// Переменная для всех DOM-элементов изображений в галлерее
+// Переменная для всех DOM-элементов изображений и их заголовков в галлерее
 const image = content.querySelectorAll('.gallery__image');
+const title = content.querySelectorAll('.gallery__title');
 // Открытие попапа просмотра изображений
 for (let i = 0; i < image.length; i++) {
   image[i].addEventListener('click', function () {
@@ -161,6 +162,8 @@ for (let i = 0; i < image.length; i++) {
 
     let popupImage = popup.querySelector('.popup__image');
     popupImage.src = image[i].src;
+    let popupCaption = popup.querySelector('.popup__caption');
+    popupCaption.textContent = title[i].textContent;
   })
 }
 
