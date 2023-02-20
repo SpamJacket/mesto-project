@@ -7,28 +7,28 @@ const content = page.querySelector('.content');
 // Создание массива объектов с названием и ссылкой для карточки
 const initialCards = [
   {
-    name: 'Архыз',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-  },
-  {
-    name: 'Челябинская область',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-  },
-  {
-    name: 'Иваново',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-  },
-  {
-    name: 'Камчатка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
+    name: 'Байкал',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
   },
   {
     name: 'Холмогорский район',
     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
   },
   {
-    name: 'Байкал',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
+    name: 'Камчатка',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
+  },
+  {
+    name: 'Иваново',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
+  },
+  {
+    name: 'Челябинская область',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
+  },
+  {
+    name: 'Архыз',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
   }
 ]
 
@@ -37,7 +37,7 @@ const galleryList = content.querySelector('.gallery__list');
 
 // Функция добавления карточки на страницу
 function addingCard (i) {
-  galleryList.insertAdjacentHTML('beforeend', `<li class="gallery__item">
+  galleryList.insertAdjacentHTML('afterbegin', `<li class="gallery__item">
                                                 <button class="gallery__delete-button" type="button" aria-label="Удалить"></button>
 
                                                 <img class="gallery__image" src="${initialCards[i].link}" alt="Собор в Карачаевске">
@@ -127,7 +127,10 @@ function handleFormAdded(evt) {
     addingCard(initialCards.length - 1);
     
     titlePopup.value = '';
-    linkPopup.value = ''; 
+    linkPopup.value = '';
+
+    let popup = page.querySelector('.popup_type_place');
+    popup.style = 'visibility: hidden; opacity: 0;';
   }
 }
 
