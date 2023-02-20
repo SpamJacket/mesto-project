@@ -35,8 +35,8 @@ const initialCards = [
 // Переменная для списка карточек
 const galleryList = content.querySelector('.gallery__list');
 
-// Добавляем на страницу все карточки из массива карточек
-for (let i = 0; i < initialCards.length; i++){
+// Функция добавления карточки на страницу
+function addingCard (i) {
   galleryList.insertAdjacentHTML('beforeend', `<li class="gallery__item">
                                                 <button class="gallery__delete-button" type="button" aria-label="Удалить"></button>
 
@@ -46,6 +46,11 @@ for (let i = 0; i < initialCards.length; i++){
 
                                                 <button class="gallery__like" type="button" aria-label="Лайк"></button>
                                               </li>`);
+}
+
+// Добавляем на страницу все карточки из массива карточек при загрузке страницы
+for (let i = 0; i < initialCards.length; i++){
+  addingCard(i);
 }
 
 
@@ -119,17 +124,10 @@ function handleFormAdded(evt) {
   if (titlePopup.value !== '' && linkPopup.value !== '') {
     initialCards[initialCards.length] = {name: `${titlePopup.value}`, link: `${linkPopup.value}`};
 
-    galleryList.insertAdjacentHTML('beforeend', `<li class="gallery__item">
-                                                  <button class="gallery__delete-button" type="button" aria-label="Удалить"></button>
-  
-                                                  <img class="gallery__image" src="${initialCards[initialCards.length - 1].link}" alt="Собор в Карачаевске">
-  
-                                                  <h2 class="gallery__title">${initialCards[initialCards.length - 1].name}</h2>
-  
-                                                  <button class="gallery__like" type="button" aria-label="Лайк"></button>
-                                                </li>`);
+    addingCard(initialCards.length - 1);
+    
     titlePopup.value = '';
-    linkPopup.value = '';  
+    linkPopup.value = ''; 
   }
 }
 
@@ -143,6 +141,9 @@ const closeAddBtn = page.querySelector('.popup_type_place .popup__close-button')
 closeAddBtn.addEventListener('click', function () {
   let popup = page.querySelector('.popup_type_place');
   popup.style = 'visibility: hidden; opacity: 0;';
+
+  titlePopup.value = '';
+  linkPopup.value = '';
 })
 
 
