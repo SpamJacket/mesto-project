@@ -74,7 +74,7 @@ function autofillFormInput() {
 
 // Добавление события кнопке редактирования профиля для открытия попапа по клику
 editBtn.addEventListener('click', function () {
-  let popup = page.querySelector('.popup_type_profile');
+  const popup = page.querySelector('.popup_type_profile');
   popup.style = 'visibility: visible; opacity: 1;';
 
   autofillFormInput();
@@ -97,7 +97,7 @@ editForm.addEventListener('submit', handleFormSubmit);
 const closeEditBtn = page.querySelector('.popup_type_profile .popup__close-button');
 // Добавление события кнопке закрытия попапа редактирования профиля
 closeEditBtn.addEventListener('click', function () {
-  let popup = page.querySelector('.popup_type_profile');
+  const popup = page.querySelector('.popup_type_profile');
   popup.style = 'visibility: hidden; opacity: 0;';
 })
 
@@ -107,7 +107,7 @@ closeEditBtn.addEventListener('click', function () {
 const addBtn = content.querySelector('.profile__add-button');
 // Добавление события кнопке добавления карточек для открытия попапа по клику
 addBtn.addEventListener('click', function () {
-  let popup = page.querySelector('.popup_type_place');
+  const popup = page.querySelector('.popup_type_place');
   popup.style = 'visibility: visible; opacity: 1;';
 })
 
@@ -129,7 +129,7 @@ function handleFormAdded(evt) {
     titlePopup.value = '';
     linkPopup.value = '';
 
-    let popup = page.querySelector('.popup_type_place');
+    const popup = page.querySelector('.popup_type_place');
     popup.style = 'visibility: hidden; opacity: 0;';
   }
 }
@@ -142,7 +142,7 @@ addForm.addEventListener('submit', handleFormAdded);
 const closeAddBtn = page.querySelector('.popup_type_place .popup__close-button');
 // Добавление события кнопке закрытия попапа добавления карточки
 closeAddBtn.addEventListener('click', function () {
-  let popup = page.querySelector('.popup_type_place');
+  const popup = page.querySelector('.popup_type_place');
   popup.style = 'visibility: hidden; opacity: 0;';
 
   titlePopup.value = '';
@@ -157,12 +157,12 @@ const title = content.querySelectorAll('.gallery__title');
 // Открытие попапа просмотра изображений
 for (let i = 0; i < image.length; i++) {
   image[i].addEventListener('click', function () {
-    let popup = page.querySelector('.popup_type_img');
+    const popup = page.querySelector('.popup_type_img');
     popup.style = 'visibility: visible; opacity: 1;';
 
-    let popupImage = popup.querySelector('.popup__image');
+    const popupImage = popup.querySelector('.popup__image');
     popupImage.src = image[i].src;
-    let popupCaption = popup.querySelector('.popup__caption');
+    const popupCaption = popup.querySelector('.popup__caption');
     popupCaption.textContent = title[i].textContent;
   })
 }
@@ -172,14 +172,14 @@ for (let i = 0; i < image.length; i++) {
 const closeImgBtn = page.querySelector('.popup_type_img .popup__close-button');
 // Добавление события кнопке закрытия попапа просмотра изображений
 closeImgBtn.addEventListener('click', function () {
-  let popup = page.querySelector('.popup_type_img');
+  const popup = page.querySelector('.popup_type_img');
   popup.style = 'visibility: hidden; opacity: 0;';
 })
 
 
 
 // Переменная для всех DOM-элементов лайков всех карточек
-let like = content.querySelectorAll('.gallery__like');
+const like = content.querySelectorAll('.gallery__like');
 // Включение и выключение лайка
 for (let i = 0; i < like.length; i++){
   like[i].addEventListener('click', function () {
