@@ -6,6 +6,14 @@ const popupProfile = page.querySelector('.popup_type_profile');
 const popupPlace = page.querySelector('.popup_type_place');
 const popupImg = page.querySelector('.popup_type_img');
 
+function openPopup(popup) {
+  popup.style = 'visibility: visible; opacity: 1;';
+}
+
+function closePopup(popup) {
+  popup.style = 'visibility: hidden; opacity: 0;';
+}
+
 
 
 // Создание массива объектов с названием и ссылкой для карточки
@@ -49,7 +57,7 @@ function addingCard (name, link) {
 
   // Добавление события открытия попапа полного изображения
   cardElement.querySelector('.gallery__image').addEventListener('click', function () {
-    popupImg.style = 'visibility: visible; opacity: 1;';
+    openPopup(popupImg);
 
     popupImg.querySelector('.popup__image').src = link;
     popupImg.querySelector('.popup__caption').textContent = name;
@@ -94,7 +102,7 @@ function autofillFormInput() {
 
 // Добавление события кнопке редактирования профиля для открытия попапа по клику
 editBtn.addEventListener('click', function () {
-  popupProfile.style = 'visibility: visible; opacity: 1;';
+  openPopup(popupProfile);
 
   autofillFormInput();
 })
@@ -106,7 +114,7 @@ function handleFormSubmit(evt) {
   nameProfile.textContent = namePopupProfile.value;
   activityProfile.textContent = activityPopupProfile.value;
 
-  popupProfile.style = 'visibility: hidden; opacity: 0;';
+  closePopup(popupProfile);
 }
 
 // Добавление события кнопке сохранения попапа редактирования профиля
@@ -117,7 +125,7 @@ editForm.addEventListener('submit', handleFormSubmit);
 const addBtn = content.querySelector('.profile__add-button');
 // Добавление события кнопке добавления карточек для открытия попапа по клику
 addBtn.addEventListener('click', function () {
-  popupPlace.style = 'visibility: visible; opacity: 1;';
+  openPopup(popupPlace);
 })
 
 // Переменные формы добавления карточки, поля заголовка и ссылки на изображение
@@ -135,7 +143,7 @@ function handleFormAdded(evt) {
     titlePopupPlace.value = '';
     linkPopupPlace.value = '';
 
-    popupPlace.style = 'visibility: hidden; opacity: 0;';
+    closePopup(popupPlace);
   }
 }
 
@@ -148,7 +156,7 @@ addForm.addEventListener('submit', handleFormAdded);
 const closeEditBtn = page.querySelector('.popup_type_profile .popup__close-button');
 // Добавление события кнопке закрытия попапа редактирования профиля
 closeEditBtn.addEventListener('click', function () {
-  popupProfile.style = 'visibility: hidden; opacity: 0;';
+  closePopup(popupProfile);
 })
 
 // Переменная для кнопки закрытия попапа добавления карточки
@@ -158,12 +166,12 @@ closeAddBtn.addEventListener('click', function () {
   titlePopupPlace.value = '';
   linkPopupPlace.value = '';
 
-  popupPlace.style = 'visibility: hidden; opacity: 0;';
+  closePopup(popupPlace);
 })
 
 // Переменная для кнопки закрытия попапа просмотра изображений
 const closeImgBtn = page.querySelector('.popup_type_img .popup__close-button');
 // Добавление события кнопке закрытия попапа просмотра изображений
 closeImgBtn.addEventListener('click', function () {
-  popupImg.style = 'visibility: hidden; opacity: 0;';
+  closePopup(popupImg);
 })
