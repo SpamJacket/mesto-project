@@ -57,6 +57,7 @@ function addingCard (name, link) {
     cardElement.querySelector('.gallery__like').classList.toggle('gallery__like_active');
   });
 
+  // Добавление события удаления карточки
   cardElement.querySelector('.gallery__delete-button').addEventListener('click', function () {
     cardElement.remove();
   })
