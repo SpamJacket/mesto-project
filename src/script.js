@@ -36,34 +36,6 @@ const closeAddBtn = page.querySelector('.popup_type_place .popup__close-button')
 // Переменная для кнопки закрытия попапа просмотра изображений
 const closeImgBtn = page.querySelector('.popup_type_img .popup__close-button');
 
-// Создание массива объектов с названием и ссылкой для карточки
-const initialCards = [
-  {
-    name: 'Байкал',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-  },
-  {
-    name: 'Холмогорский район',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-  },
-  {
-    name: 'Камчатка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-  },
-  {
-    name: 'Иваново',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-  },
-  {
-    name: 'Челябинская область',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-  },
-  {
-    name: 'Архыз',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-  }
-];
-
 // Функция открытия попапа
 function openPopup(popup) {
   popup.style = 'visibility: visible; opacity: 1;';
