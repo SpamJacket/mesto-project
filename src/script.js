@@ -2,6 +2,10 @@
 const page = document.querySelector('.page');
 const content = page.querySelector('.content');
 
+const popupProfile = page.querySelector('.popup_type_profile');
+const popupPlace = page.querySelector('.popup_type_place');
+const popupImg = page.querySelector('.popup_type_img');
+
 
 
 // Создание массива объектов с названием и ссылкой для карточки
@@ -45,11 +49,10 @@ function addingCard (name, link) {
 
   // Добавление события открытия попапа полного изображения
   cardElement.querySelector('.gallery__image').addEventListener('click', function () {
-    const popup = page.querySelector('.popup_type_img');
-    popup.style = 'visibility: visible; opacity: 1;';
+    popupImg.style = 'visibility: visible; opacity: 1;';
 
-    popup.querySelector('.popup__image').src = link;
-    popup.querySelector('.popup__caption').textContent = name;
+    popupImg.querySelector('.popup__image').src = link;
+    popupImg.querySelector('.popup__caption').textContent = name;
   });
 
   // Добавление события переключения состояния лайка
@@ -77,22 +80,21 @@ const editBtn = content.querySelector('.profile__edit-button');
 
 // Переменные для формы попапа редактирования профиля, полей ввода попапа редактирования профиля, имени и активности в профиле
 const editForm = page.querySelector('.popup__form_type_profile');
-const namePopup = editForm.querySelector('.popup__input_text_name');
-const activityPopup = editForm.querySelector('.popup__input_text_activity');
+const namePopupProfile = editForm.querySelector('.popup__input_text_name');
+const activityPopupProfile = editForm.querySelector('.popup__input_text_activity');
 const nameProfile = content.querySelector('.profile__name');
 const activityProfile = content.querySelector('.profile__activity');
 
 // Функция подтягивания значений из профиля в попап редактирования профиля
 function autofillFormInput() {
-  namePopup.value = nameProfile.textContent;
-  activityPopup.value = activityProfile.textContent;
+  namePopupProfile.value = nameProfile.textContent;
+  activityPopupProfile.value = activityProfile.textContent;
 }
 
 
 // Добавление события кнопке редактирования профиля для открытия попапа по клику
 editBtn.addEventListener('click', function () {
-  const popup = page.querySelector('.popup_type_profile');
-  popup.style = 'visibility: visible; opacity: 1;';
+  popupProfile.style = 'visibility: visible; opacity: 1;';
 
   autofillFormInput();
 })
@@ -101,8 +103,10 @@ editBtn.addEventListener('click', function () {
 function handleFormSubmit(evt) {
   evt.preventDefault();
 
-  nameProfile.textContent = namePopup.value;
-  activityProfile.textContent = activityPopup.value;
+  nameProfile.textContent = namePopupProfile.value;
+  activityProfile.textContent = activityPopupProfile.value;
+
+  popupProfile.style = 'visibility: hidden; opacity: 0;';
 }
 
 // Добавление события кнопке сохранения попапа редактирования профиля
@@ -113,27 +117,25 @@ editForm.addEventListener('submit', handleFormSubmit);
 const addBtn = content.querySelector('.profile__add-button');
 // Добавление события кнопке добавления карточек для открытия попапа по клику
 addBtn.addEventListener('click', function () {
-  const popup = page.querySelector('.popup_type_place');
-  popup.style = 'visibility: visible; opacity: 1;';
+  popupPlace.style = 'visibility: visible; opacity: 1;';
 })
 
 // Переменные формы добавления карточки, поля заголовка и ссылки на изображение
 const addForm = page.querySelector('.popup__form_type_place');
-const titlePopup = addForm.querySelector('.popup__input_text_title');
-const linkPopup = addForm.querySelector('.popup__input_text_link');
+const titlePopupPlace = addForm.querySelector('.popup__input_text_title');
+const linkPopupPlace = addForm.querySelector('.popup__input_text_link');
 
 // Функция добавления карточки из формы
 function handleFormAdded(evt) {
   evt.preventDefault();
 
-  if (titlePopup.value !== '' && linkPopup.value !== '') {
-    addingCard(titlePopup.value, linkPopup.value);
+  if (titlePopupPlace.value !== '' && linkPopupPlace.value !== '') {
+    addingCard(titlePopupPlace.value, linkPopupPlace.value);
     
-    titlePopup.value = '';
-    linkPopup.value = '';
+    titlePopupPlace.value = '';
+    linkPopupPlace.value = '';
 
-    const popup = page.querySelector('.popup_type_place');
-    popup.style = 'visibility: hidden; opacity: 0;';
+    popupPlace.style = 'visibility: hidden; opacity: 0;';
   }
 }
 
@@ -146,25 +148,22 @@ addForm.addEventListener('submit', handleFormAdded);
 const closeEditBtn = page.querySelector('.popup_type_profile .popup__close-button');
 // Добавление события кнопке закрытия попапа редактирования профиля
 closeEditBtn.addEventListener('click', function () {
-  const popup = page.querySelector('.popup_type_profile');
-  popup.style = 'visibility: hidden; opacity: 0;';
+  popupProfile.style = 'visibility: hidden; opacity: 0;';
 })
 
 // Переменная для кнопки закрытия попапа добавления карточки
 const closeAddBtn = page.querySelector('.popup_type_place .popup__close-button');
 // Добавление события кнопке закрытия попапа добавления карточки
 closeAddBtn.addEventListener('click', function () {
-  titlePopup.value = '';
-  linkPopup.value = '';
+  titlePopupPlace.value = '';
+  linkPopupPlace.value = '';
 
-  const popup = page.querySelector('.popup_type_place');
-  popup.style = 'visibility: hidden; opacity: 0;';
+  popupPlace.style = 'visibility: hidden; opacity: 0;';
 })
 
 // Переменная для кнопки закрытия попапа просмотра изображений
 const closeImgBtn = page.querySelector('.popup_type_img .popup__close-button');
 // Добавление события кнопке закрытия попапа просмотра изображений
 closeImgBtn.addEventListener('click', function () {
-  const popup = page.querySelector('.popup_type_img');
-  popup.style = 'visibility: hidden; opacity: 0;';
+  popupImg.style = 'visibility: hidden; opacity: 0;';
 })
