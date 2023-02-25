@@ -117,8 +117,7 @@ function handleFormAdded(evt) {
   if (titlePopupPlace.value !== '' && linkPopupPlace.value !== '') {
     addingCard(titlePopupPlace.value, linkPopupPlace.value);
     
-    titlePopupPlace.value = '';
-    linkPopupPlace.value = '';
+    addForm.reset();
 
     closePopup(popupPlace);
   }
@@ -149,8 +148,7 @@ closeEditBtn.addEventListener('click', function () {
 
 // Добавление события кнопке закрытия попапа добавления карточки
 closeAddBtn.addEventListener('click', function () {
-  titlePopupPlace.value = '';
-  linkPopupPlace.value = '';
+  addForm.reset();
 
   closePopup(popupPlace);
 })
