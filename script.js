@@ -30,27 +30,39 @@ const initialCards = [
     name: 'Архыз',
     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
   }
-]
+];
 
-// Переменная для списка карточек
+// Переменные для шаблона карточки и списка карточек
+const cardTemplate = document.querySelector('#gallery-item').content;
 const galleryList = content.querySelector('.gallery__list');
 
-// Функция добавления карточки на страницу
-function addingCard (i) {
-  galleryList.insertAdjacentHTML('afterbegin', `<li class="gallery__item">
-                                                <button class="gallery__delete-button" type="button" aria-label="Удалить"></button>
+// Функция добавления карточки в список
+function addingCard (name, link) {
+  const cardElement = cardTemplate.querySelector('.gallery__item').cloneNode(true);
 
-                                                <img class="gallery__image" src="${initialCards[i].link}" alt="Собор в Карачаевске">
+  cardElement.querySelector('.gallery__image').src = link;
+  cardElement.querySelector('.gallery__title').textContent = name;
 
-                                                <h2 class="gallery__title">${initialCards[i].name}</h2>
+  // Добавление события открытия попапа полного изображения
+  cardElement.querySelector('.gallery__image').addEventListener('click', function () {
+    const popup = page.querySelector('.popup_type_img');
+    popup.style = 'visibility: visible; opacity: 1;';
 
-                                                <button class="gallery__like" type="button" aria-label="Лайк"></button>
-                                              </li>`);
+    popup.querySelector('.popup__image').src = link;
+    popup.querySelector('.popup__caption').textContent = name;
+  });
+
+  // Добавление события переключения состояния лайка
+  cardElement.querySelector('.gallery__like').addEventListener('click', function () {
+    cardElement.querySelector('.gallery__like').classList.toggle('gallery__like_active');
+  });
+
+  galleryList.prepend(cardElement);
 }
 
-// Добавляем на страницу все карточки из массива карточек при загрузке страницы
-for (let i = 0; i < initialCards.length; i++){
-  addingCard(i);
+// Добавления карточек из списка при загрузке страницы
+for (let i = 0; i < initialCards.length; i++) {
+  addingCard(initialCards[i].name, initialCards[i].link);
 }
 
 
@@ -65,12 +77,12 @@ const activityPopup = editForm.querySelector('.popup__input_text_activity');
 const nameProfile = content.querySelector('.profile__name');
 const activityProfile = content.querySelector('.profile__activity');
 
-
 // Функция подтягивания значений из профиля в попап редактирования профиля
 function autofillFormInput() {
   namePopup.value = nameProfile.textContent;
   activityPopup.value = activityProfile.textContent;
 }
+
 
 // Добавление события кнопке редактирования профиля для открытия попапа по клику
 editBtn.addEventListener('click', function () {
@@ -79,7 +91,6 @@ editBtn.addEventListener('click', function () {
 
   autofillFormInput();
 })
-
 
 // Функция сохранения значений из попапа редактирования профиля
 function handleFormSubmit(evt) {
@@ -93,16 +104,6 @@ function handleFormSubmit(evt) {
 editForm.addEventListener('submit', handleFormSubmit);
 
 
-// Переменная для кнопки закрытия попапа редактирования профиля
-const closeEditBtn = page.querySelector('.popup_type_profile .popup__close-button');
-// Добавление события кнопке закрытия попапа редактирования профиля
-closeEditBtn.addEventListener('click', function () {
-  const popup = page.querySelector('.popup_type_profile');
-  popup.style = 'visibility: hidden; opacity: 0;';
-})
-
-
-
 // Переменная для кнопки добавления карточки
 const addBtn = content.querySelector('.profile__add-button');
 // Добавление события кнопке добавления карточек для открытия попапа по клику
@@ -111,20 +112,17 @@ addBtn.addEventListener('click', function () {
   popup.style = 'visibility: visible; opacity: 1;';
 })
 
-
 // Переменные формы добавления карточки, поля заголовка и ссылки на изображение
 const addForm = page.querySelector('.popup__form_type_place');
 const titlePopup = addForm.querySelector('.popup__input_text_title');
 const linkPopup = addForm.querySelector('.popup__input_text_link');
 
-// Функция добавления карточки
+// Функция добавления карточки из формы
 function handleFormAdded(evt) {
   evt.preventDefault();
 
   if (titlePopup.value !== '' && linkPopup.value !== '') {
-    initialCards[initialCards.length] = {name: `${titlePopup.value}`, link: `${linkPopup.value}`};
-
-    addingCard(initialCards.length - 1);
+    addingCard(titlePopup.value, linkPopup.value);
     
     titlePopup.value = '';
     linkPopup.value = '';
@@ -138,35 +136,25 @@ function handleFormAdded(evt) {
 addForm.addEventListener('submit', handleFormAdded);
 
 
+
+// Переменная для кнопки закрытия попапа редактирования профиля
+const closeEditBtn = page.querySelector('.popup_type_profile .popup__close-button');
+// Добавление события кнопке закрытия попапа редактирования профиля
+closeEditBtn.addEventListener('click', function () {
+  const popup = page.querySelector('.popup_type_profile');
+  popup.style = 'visibility: hidden; opacity: 0;';
+})
+
 // Переменная для кнопки закрытия попапа добавления карточки
 const closeAddBtn = page.querySelector('.popup_type_place .popup__close-button');
 // Добавление события кнопке закрытия попапа добавления карточки
 closeAddBtn.addEventListener('click', function () {
-  const popup = page.querySelector('.popup_type_place');
-  popup.style = 'visibility: hidden; opacity: 0;';
-
   titlePopup.value = '';
   linkPopup.value = '';
+
+  const popup = page.querySelector('.popup_type_place');
+  popup.style = 'visibility: hidden; opacity: 0;';
 })
-
-
-
-// Переменная для всех DOM-элементов изображений и их заголовков в галлерее
-const image = content.querySelectorAll('.gallery__image');
-const title = content.querySelectorAll('.gallery__title');
-// Открытие попапа просмотра изображений
-for (let i = 0; i < image.length; i++) {
-  image[i].addEventListener('click', function () {
-    const popup = page.querySelector('.popup_type_img');
-    popup.style = 'visibility: visible; opacity: 1;';
-
-    const popupImage = popup.querySelector('.popup__image');
-    popupImage.src = image[i].src;
-    const popupCaption = popup.querySelector('.popup__caption');
-    popupCaption.textContent = title[i].textContent;
-  })
-}
-
 
 // Переменная для кнопки закрытия попапа просмотра изображений
 const closeImgBtn = page.querySelector('.popup_type_img .popup__close-button');
@@ -175,14 +163,3 @@ closeImgBtn.addEventListener('click', function () {
   const popup = page.querySelector('.popup_type_img');
   popup.style = 'visibility: hidden; opacity: 0;';
 })
-
-
-
-// Переменная для всех DOM-элементов лайков всех карточек
-const like = content.querySelectorAll('.gallery__like');
-// Включение и выключение лайка
-for (let i = 0; i < like.length; i++){
-  like[i].addEventListener('click', function () {
-    like[i].classList.toggle('gallery__like_active');
-  })
-}
