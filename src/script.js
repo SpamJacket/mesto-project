@@ -61,8 +61,8 @@ function handleFormSubmit(evt) {
   closePopup(popupProfile);
 }
 
-// Функция добавления карточки в список
-function addingCard (name, link) {
+// Функция создания карточки
+function createCard (name, link) {
   const cardElement = cardTemplate.querySelector('.gallery__item').cloneNode(true);
 
   cardElement.querySelector('.gallery__image').src = link;
@@ -86,7 +86,17 @@ function addingCard (name, link) {
     cardElement.remove();
   })
 
-  galleryList.prepend(cardElement);
+  return cardElement;
+}
+
+// Функция добавления карточки в список
+function addCard (cardElem) {
+  galleryList.prepend(cardElem);
+}
+
+// Функция добавления карточки в список из попапа
+function addingCard (name, link) {
+  addCard(createCard(name, link));  
 }
 
 // Добавления карточек из списка при загрузке страницы
