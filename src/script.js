@@ -29,6 +29,10 @@ const addForm = page.querySelector('.popup__form_type_place');
 const titlePopupPlace = addForm.querySelector('.popup__input_text_title');
 const linkPopupPlace = addForm.querySelector('.popup__input_text_link');
 
+// Переменные фигуры попапа просмотра изображения
+const imagePopupImg = popupImg.querySelector('.popup__image');
+const captionPopupImg = popupImg.querySelector('.popup__caption');
+
 // Переменная для кнопки закрытия попапа редактирования профиля
 const closeEditBtn = page.querySelector('.popup_type_profile .popup__close-button');
 // Переменная для кнопки закрытия попапа добавления карточки
@@ -67,13 +71,15 @@ function createCard (name, link) {
 
   cardElement.querySelector('.gallery__image').src = link;
   cardElement.querySelector('.gallery__title').textContent = name;
+  cardElement.querySelector('.gallery__image').alt = name;
 
   // Добавление события открытия попапа полного изображения
   cardElement.querySelector('.gallery__image').addEventListener('click', function () {
     openPopup(popupImg);
 
-    popupImg.querySelector('.popup__image').src = link;
-    popupImg.querySelector('.popup__caption').textContent = name;
+    imagePopupImg.src = link;
+    captionPopupImg.textContent = name;
+    imagePopupImg.alt = name;
   });
 
   // Добавление события переключения состояния лайка
