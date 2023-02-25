@@ -35,65 +35,6 @@
 
             <section class="gallery">
                 <ul class="gallery__list">
-                    <li class="gallery__item">
-                        <button class="gallery__delete-button" type="button" aria-label="Удалить"></button>
-
-                        <img class="gallery__image" src="./images/karachaevsk.jpg" alt="Собор в Карачаевске">
-                        
-                        <h2 class="gallery__title">Карачаевск</h2>
-
-                        <button class="gallery__like" type="button" aria-label="Лайк"></button>
-                    </li>
-                        
-                    <li class="gallery__item">
-                        <button class="gallery__delete-button" type="button" aria-label="Удалить"></button>
-
-                        <img class="gallery__image" src="./images/elbrus.jpg" alt="Эльбрус">
-                        
-                        <h2 class="gallery__title">Гора Эльбрус</h2>
-
-                        <button class="gallery__like" type="button" aria-label="Лайк"></button>
-                    </li>
-
-                    <li class="gallery__item">
-                        <button class="gallery__delete-button" type="button" aria-label="Удалить"></button>
-
-                        <img class="gallery__image" src="./images/dombai.jpg" alt="Домбай">
-                        
-                        <h2 class="gallery__title">Домбай</h2>
-
-                        <button class="gallery__like" type="button" aria-label="Лайк"></button>
-                    </li>
-
-                    <li class="gallery__item">
-                        <button class="gallery__delete-button" type="button" aria-label="Удалить"></button>
-
-                        <img class="gallery__image" src="./images/elbrus.jpg" alt="Эльбрус">
-                        
-                        <h2 class="gallery__title">Гора Эльбрус</h2>
-
-                        <button class="gallery__like" type="button" aria-label="Лайк"></button>
-                    </li>
-
-                    <li class="gallery__item">
-                        <button class="gallery__delete-button" type="button" aria-label="Удалить"></button>
-
-                        <img class="gallery__image" src="./images/dombai.jpg" alt="Домбай">
-                        
-                        <h2 class="gallery__title">Домбай</h2>
-
-                        <button class="gallery__like" type="button" aria-label="Лайк"></button>
-                    </li>
-
-                    <li class="gallery__item">
-                        <button class="gallery__delete-button" type="button" aria-label="Удалить"></button>
-
-                        <img class="gallery__image" src="./images/karachaevsk.jpg" alt="Собор в Карачаевске">
-                        
-                        <h2 class="gallery__title">Карачаево-Черкессия</h2>
-
-                        <button class="gallery__like" type="button" aria-label="Лайк"></button>
-                    </li>
                 </ul>
             </section>
         </main>
@@ -108,7 +49,7 @@
 
                 <h2 class="popup__title">Редактировать профиль</h2>
 
-                <form class="popup__form" name="profile-form">
+                <form class="popup__form popup__form_type_profile" name="profile-form">
                     <input class="popup__input popup__input_text_name" name="profile-name" type="text" value="" placeholder="Введите имя">
 
                     <input class="popup__input popup__input_text_activity" name="profile-activity" type="text" value="" placeholder="Введите статус">
@@ -124,7 +65,7 @@
 
                 <h2 class="popup__title">Новое место</h2>
 
-                <form class="popup__form" name="place-form">
+                <form class="popup__form popup__form_type_place" name="place-form">
                     <input class="popup__input popup__input_text_title" name="place-title" type="text" value="" placeholder="Название">
 
                     <input class="popup__input popup__input_text_link" name="place-link" type="text" value="" placeholder="Ссылка на картинку">
@@ -134,7 +75,7 @@
             </div>
         </div>
 
-        <div class="popup popup_type_place">
+        <div class="popup popup_type_img">
             <div class="popup__container popup__container_type_full-img">
                 <button class="popup__close-button popup__close-button_type_full-img" type="button" aria-label="Закрыть"></button>
 
@@ -145,5 +86,17 @@
             </div>
         </div>
     </div>
+    <template id="gallery-item">
+        <li class="gallery__item">
+            <button class="gallery__delete-button" type="button" aria-label="Удалить"></button>
+
+            <img class="gallery__image" src="#" alt="Фотография пользователя">
+
+            <h2 class="gallery__title"></h2>
+
+            <button class="gallery__like" type="button" aria-label="Лайк"></button>
+        </li>
+    </template>
+    <script src="./script.js"></script>
 </body>
 </html>
