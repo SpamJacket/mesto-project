@@ -42,11 +42,11 @@ const closeImgBtn = page.querySelector('.popup_type_img .popup__close-button');
 
 // Функция открытия попапа
 function openPopup(popup) {
-  popup.style = 'visibility: visible; opacity: 1;';
+  popup.classList.add('popup_opened');
 }
 // Функция закрытия попапа
 function closePopup(popup) {
-  popup.style = 'visibility: hidden; opacity: 0;';
+  popup.classList.remove('popup_opened');
 }
 
 // Функция подтягивания значений из профиля в попап редактирования профиля
