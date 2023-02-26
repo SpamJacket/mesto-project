@@ -106,9 +106,9 @@ function addingCard (name, link) {
 }
 
 // Добавления карточек из списка при загрузке страницы
-for (let i = 0; i < initialCards.length; i++) {
-  addingCard(initialCards[i].name, initialCards[i].link);
-}
+initialCards.forEach(function (item) {
+  addingCard(item.name, item.link)
+});
 
 // Функция добавления карточки из формы
 function handleFormAdded(evt) {
