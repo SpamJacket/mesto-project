@@ -75,7 +75,7 @@ function createCard (name, link) {
   imageCardElement.alt = name;
 
   // Добавление события открытия попапа полного изображения
-  imageCardElement.addEventListener('click', function () {
+  imageCardElement.addEventListener('click', () => {
     openPopup(popupImg);
 
     imagePopupImg.src = link;
@@ -86,12 +86,12 @@ function createCard (name, link) {
   const likeCardElement = cardElement.querySelector('.gallery__like');
 
   // Добавление события переключения состояния лайка
-  likeCardElement.addEventListener('click', function () {
+  likeCardElement.addEventListener('click', () => {
     likeCardElement.classList.toggle('gallery__like_active');
   });
 
   // Добавление события удаления карточки
-  cardElement.querySelector('.gallery__delete-button').addEventListener('click', function () {
+  cardElement.querySelector('.gallery__delete-button').addEventListener('click', () => {
     cardElement.remove();
   })
 
@@ -104,7 +104,7 @@ function addCard (name, link) {
 }
 
 // Добавления карточек из списка при загрузке страницы
-initialCards.forEach(function (item) {
+initialCards.forEach(item => {
   addCard(item.name, item.link)
 });
 
@@ -122,7 +122,7 @@ function submitAddCardForm(evt) {
 }
 
 // Добавление события кнопке редактирования профиля для открытия попапа по клику
-buttonOpenEditProfilePopup.addEventListener('click', function () {
+buttonOpenEditProfilePopup.addEventListener('click', () => {
   openPopup(popupProfile);
 
   fillInEditProfileFormInputs();
@@ -132,7 +132,7 @@ buttonOpenEditProfilePopup.addEventListener('click', function () {
 formEditProfile.addEventListener('submit', submitEditProfileForm);
 
 // Добавление события кнопке добавления карточек для открытия попапа по клику
-buttonOpenAddCardPopup.addEventListener('click', function () {
+buttonOpenAddCardPopup.addEventListener('click', () => {
   openPopup(popupPlace);
 })
 
@@ -140,18 +140,18 @@ buttonOpenAddCardPopup.addEventListener('click', function () {
 formAddCard.addEventListener('submit', submitAddCardForm);
 
 // Добавление события кнопке закрытия попапа редактирования профиля
-buttonCloseEditProfilePopup.addEventListener('click', function () {
+buttonCloseEditProfilePopup.addEventListener('click', () => {
   closePopup(popupProfile);
 })
 
 // Добавление события кнопке закрытия попапа добавления карточки
-buttonCloseAddCardPopup.addEventListener('click', function () {
+buttonCloseAddCardPopup.addEventListener('click', () => {
   formAddCard.reset();
 
   closePopup(popupPlace);
 })
 
 // Добавление события кнопке закрытия попапа просмотра изображений
-buttonCloseImgPopup.addEventListener('click', function () {
+buttonCloseImgPopup.addEventListener('click', () => {
   closePopup(popupImg);
 })
