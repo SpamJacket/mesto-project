@@ -163,4 +163,10 @@ page.querySelectorAll('.popup').forEach(pop => {
       closePopup(pop);
     }
   });
+
+  document.addEventListener('keydown', evt => {
+    if (evt.key === 'Escape' && pop.classList.contains('popup_opened')) {
+      closePopup(pop);
+    }
+  });
 });
