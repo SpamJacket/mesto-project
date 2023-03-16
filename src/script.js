@@ -3,9 +3,17 @@ const page = document.querySelector('.page');
 const content = page.querySelector('.content');
 
 // Переменные для попапов
+const popupAvatar = page.querySelector('.popup_type_avatar');
 const popupProfile = page.querySelector('.popup_type_profile');
 const popupPlace = page.querySelector('.popup_type_place');
 const popupImg = page.querySelector('.popup_type_img');
+
+// Переменная для аватара
+const avatar = content.querySelector('.profile__avatar');
+
+// Переменные для формы попапа редактирования аватара, полей ввода попапа редактирования аватара
+const formEditAvatar = page.querySelector('.popup__form_type_avatar');
+const linkPopupAvatar = formEditAvatar.querySelector('.popup__input_text_link');
 
 // Переменные для шаблона карточки и списка карточек
 const cardTemplate = document.querySelector('#gallery-item').content;
@@ -33,6 +41,8 @@ const linkPopupPlace = formAddCard.querySelector('.popup__input_text_link');
 const imagePopupImg = popupImg.querySelector('.popup__image');
 const captionPopupImg = popupImg.querySelector('.popup__caption');
 
+// Переменная для кнопки закрытия попапа редактирования аватара
+const buttonCloseEditAvatarPopup = page.querySelector('.popup_type_avatar .popup__close-button')
 // Переменная для кнопки закрытия попапа редактирования профиля
 const buttonCloseEditProfilePopup = page.querySelector('.popup_type_profile .popup__close-button');
 // Переменная для кнопки закрытия попапа добавления карточки
@@ -54,6 +64,19 @@ function closePopup(popup) {
 function fillInEditProfileFormInputs() {
   namePopupProfile.value = nameProfile.textContent;
   activityPopupProfile.value = activityProfile.textContent;
+}
+
+// Функция сохранения аватара из попапа редактирования аватара
+function submitEditAvatarForm(evt) {
+  evt.preventDefault();
+
+  if (linkPopupAvatar.value !== '') {
+    avatar.style = `background-image: url("${linkPopupAvatar.value}")`;
+
+    formEditAvatar.reset();
+
+    closePopup(popupAvatar);
+  }
 }
 
 // Функция сохранения значений из попапа редактирования профиля
@@ -122,12 +145,20 @@ function submitAddCardForm(evt) {
   }
 }
 
+// Добавление события аватару открытия попапа по клику
+avatar.addEventListener('click', () => {
+  openPopup(popupAvatar);
+});
+
+// Добавление события кнопке сохранения попапа редактирования аватара
+formEditAvatar.addEventListener('submit', submitEditAvatarForm);
+
 // Добавление события кнопке редактирования профиля для открытия попапа по клику
 buttonOpenEditProfilePopup.addEventListener('click', () => {
   openPopup(popupProfile);
 
   fillInEditProfileFormInputs();
-})
+});
 
 // Добавление события кнопке сохранения попапа редактирования профиля
 formEditProfile.addEventListener('submit', submitEditProfileForm);
@@ -135,37 +166,50 @@ formEditProfile.addEventListener('submit', submitEditProfileForm);
 // Добавление события кнопке добавления карточек для открытия попапа по клику
 buttonOpenAddCardPopup.addEventListener('click', () => {
   openPopup(popupPlace);
-})
+});
 
 // Добавление события кнопке создания карточки
 formAddCard.addEventListener('submit', submitAddCardForm);
 
 // Добавление события кнопке закрытия попапа редактирования профиля
+buttonCloseEditAvatarPopup.addEventListener('click', () => {
+  formEditAvatar.reset();
+
+  closePopup(popupAvatar);
+});
+
+// Добавление события кнопке закрытия попапа редактирования профиля
 buttonCloseEditProfilePopup.addEventListener('click', () => {
   closePopup(popupProfile);
-})
+});
 
 // Добавление события кнопке закрытия попапа добавления карточки
 buttonCloseAddCardPopup.addEventListener('click', () => {
   formAddCard.reset();
 
   closePopup(popupPlace);
-})
+});
 
 // Добавление события кнопке закрытия попапа просмотра изображений
 buttonCloseImgPopup.addEventListener('click', () => {
   closePopup(popupImg);
-})
+});
 
 page.querySelectorAll('.popup').forEach(pop => {
   pop.addEventListener('click', evt => {
     if (evt.target.classList.contains('popup')) {
+      formEditAvatar.reset();
+      formAddCard.reset();
+
       closePopup(pop);
     }
   });
 
   document.addEventListener('keydown', evt => {
     if (evt.key === 'Escape' && pop.classList.contains('popup_opened')) {
+      formEditAvatar.reset();
+      formAddCard.reset();
+
       closePopup(pop);
     }
   });
