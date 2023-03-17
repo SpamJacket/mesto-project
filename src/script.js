@@ -6,6 +6,7 @@ const content = page.querySelector('.content');
 const popupAvatar = page.querySelector('.popup_type_avatar');
 const popupProfile = page.querySelector('.popup_type_profile');
 const popupPlace = page.querySelector('.popup_type_place');
+const popupAcceptDelete = page.querySelector('.popup_type_accept-delete')
 const popupImg = page.querySelector('.popup_type_img');
 
 // Переменная для аватара
@@ -37,6 +38,9 @@ const formAddCard = page.querySelector('.popup__form_type_place');
 const titlePopupPlace = formAddCard.querySelector('.popup__input_text_title');
 const linkPopupPlace = formAddCard.querySelector('.popup__input_text_link');
 
+// Переменная формы подтверждения удаления карточки
+const formDeleteCard = page.querySelector('.popup__form_type_accept-delete');
+
 // Переменные фигуры попапа просмотра изображения
 const imagePopupImg = popupImg.querySelector('.popup__image');
 const captionPopupImg = popupImg.querySelector('.popup__caption');
@@ -47,6 +51,8 @@ const buttonCloseEditAvatarPopup = page.querySelector('.popup_type_avatar .popup
 const buttonCloseEditProfilePopup = page.querySelector('.popup_type_profile .popup__close-button');
 // Переменная для кнопки закрытия попапа добавления карточки
 const buttonCloseAddCardPopup = page.querySelector('.popup_type_place .popup__close-button');
+// Переменная для кнопки закрытия попапа подверждения удаления
+const buttonCloseAcceptDeletePopup = page.querySelector('.popup_type_accept-delete .popup__close-button');
 // Переменная для кнопки закрытия попапа просмотра изображений
 const buttonCloseImgPopup = page.querySelector('.popup_type_img .popup__close-button');
 
@@ -116,7 +122,16 @@ function createCard(name, link) {
 
   // Добавление события удаления карточки
   cardElement.querySelector('.gallery__delete-button').addEventListener('click', () => {
-    cardElement.remove();
+    openPopup(popupAcceptDelete);
+
+    // Открытие и работа попапа подтверждения удаления
+    formDeleteCard.addEventListener('submit', evt => {
+      evt.preventDefault();
+
+      cardElement.remove();
+
+      closePopup(popupAcceptDelete);
+    });
   })
 
   return cardElement;
@@ -190,11 +205,17 @@ buttonCloseAddCardPopup.addEventListener('click', () => {
   closePopup(popupPlace);
 });
 
+// Добавление события кнопке закрытия попапа подтверждения удаления
+buttonCloseAcceptDeletePopup.addEventListener('click', () => {
+  closePopup(popupAcceptDelete);
+});
+
 // Добавление события кнопке закрытия попапа просмотра изображений
 buttonCloseImgPopup.addEventListener('click', () => {
   closePopup(popupImg);
 });
 
+// Добавление события закрытия попапа нажатием на оверлэй или esc
 page.querySelectorAll('.popup').forEach(pop => {
   pop.addEventListener('click', evt => {
     if (evt.target.classList.contains('popup')) {
