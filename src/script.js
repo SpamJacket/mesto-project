@@ -13,8 +13,8 @@ const popupImg = page.querySelector('.popup_type_img');
 const avatar = content.querySelector('.profile__avatar');
 
 // Переменные для формы попапа редактирования аватара, полей ввода попапа редактирования аватара
-const formEditAvatar = page.querySelector('.popup__form_type_avatar');
-const linkPopupAvatar = formEditAvatar.querySelector('.popup__input_text_link');
+const formEditAvatar = document.forms.avatarForm;
+const linkPopupAvatar = formEditAvatar.elements.avatarLink;
 
 // Переменные для шаблона карточки и списка карточек
 const cardTemplate = document.querySelector('#gallery-item').content;
@@ -24,9 +24,9 @@ const galleryList = content.querySelector('.gallery__list');
 const buttonOpenEditProfilePopup = content.querySelector('.profile__edit-button');
 
 // Переменные для формы попапа редактирования профиля, полей ввода попапа редактирования профиля, имени и активности в профиле
-const formEditProfile = page.querySelector('.popup__form_type_profile');
-const namePopupProfile = formEditProfile.querySelector('.popup__input_text_name');
-const activityPopupProfile = formEditProfile.querySelector('.popup__input_text_activity');
+const formEditProfile = document.forms.profileForm;
+const namePopupProfile = formEditProfile.elements.profileName;
+const activityPopupProfile = formEditProfile.elements.profileActivity;
 const nameProfile = content.querySelector('.profile__name');
 const activityProfile = content.querySelector('.profile__activity');
 
@@ -34,12 +34,12 @@ const activityProfile = content.querySelector('.profile__activity');
 const buttonOpenAddCardPopup = content.querySelector('.profile__add-button');
 
 // Переменные формы добавления карточки, поля заголовка и ссылки на изображение
-const formAddCard = page.querySelector('.popup__form_type_place');
-const titlePopupPlace = formAddCard.querySelector('.popup__input_text_title');
-const linkPopupPlace = formAddCard.querySelector('.popup__input_text_link');
+const formAddCard = document.forms.placeForm;
+const titlePopupPlace = formAddCard.elements.placeTitle;
+const linkPopupPlace = formAddCard.elements.placeLink;
 
 // Переменная формы подтверждения удаления карточки
-const formDeleteCard = page.querySelector('.popup__form_type_accept-delete');
+const formDeleteCard = document.forms.acceptDeleteForm;
 
 // Переменные фигуры попапа просмотра изображения
 const imagePopupImg = popupImg.querySelector('.popup__image');
