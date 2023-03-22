@@ -1,3 +1,6 @@
+import { enableFormValidation, resetEnableValidation } from './validation.js';
+import { initialCards, enableValidation } from './constants.js';
+
 // Переменные для блоков page и content
 const page = document.querySelector('.page');
 const content = page.querySelector('.content');
@@ -10,7 +13,7 @@ const popupAcceptDelete = page.querySelector('.popup_type_accept-delete')
 const popupImg = page.querySelector('.popup_type_img');
 
 // Переменная для аватара
-const avatar = content.querySelector('.profile__avatar');
+const buttonOpenAvatarPopup = content.querySelector('.profile__avatar');
 
 // Переменные для формы попапа редактирования аватара, полей ввода попапа редактирования аватара
 const formEditAvatar = document.forms.avatarForm;
@@ -108,6 +111,8 @@ function createCard(name, link) {
   imageCardElement.addEventListener('click', () => {
     openPopup(popupImg);
 
+    document.addEventListener('keydown', checkEscapePress);
+
     imagePopupImg.src = link;
     captionPopupImg.textContent = name;
     imagePopupImg.alt = name;
@@ -131,6 +136,8 @@ function createCard(name, link) {
       cardElement.remove();
 
       closePopup(popupAcceptDelete);
+
+      document.addEventListener('keydown', checkEscapePress);
     });
   })
 
@@ -160,9 +167,23 @@ function submitAddCardForm(evt) {
   }
 }
 
-// Добавление события аватару открытия попапа по клику
-avatar.addEventListener('click', () => {
+// Функция проверки esc ли нажат и закрытие попапа, если он
+function checkEscapePress(evt) {
+  if (evt.key === 'Escape' && page.querySelector('.popup_opened')) {
+    closePopup(page.querySelector('.popup_opened'));
+    document.removeEventListener('keydown', checkEscapePress);
+  }
+}
+
+// Добавление события аватару открытия попапа по  клику
+buttonOpenAvatarPopup.addEventListener('click', () => {
+  formEditAvatar.reset();
+
+  resetEnableValidation(formEditAvatar, enableValidation);
+  
   openPopup(popupAvatar);
+
+  document.addEventListener('keydown', checkEscapePress);
 });
 
 // Добавление события кнопке сохранения попапа редактирования аватара
@@ -170,9 +191,13 @@ formEditAvatar.addEventListener('submit', submitEditAvatarForm);
 
 // Добавление события кнопке редактирования профиля для открытия попапа по клику
 buttonOpenEditProfilePopup.addEventListener('click', () => {
+  fillInEditProfileFormInputs();
+  
+  resetEnableValidation(formEditProfile, enableValidation);
+
   openPopup(popupProfile);
 
-  fillInEditProfileFormInputs();
+  document.addEventListener('keydown', checkEscapePress);
 });
 
 // Добавление события кнопке сохранения попапа редактирования профиля
@@ -180,7 +205,13 @@ formEditProfile.addEventListener('submit', submitEditProfileForm);
 
 // Добавление события кнопке добавления карточек для открытия попапа по клику
 buttonOpenAddCardPopup.addEventListener('click', () => {
+  formAddCard.reset();
+  
+  resetEnableValidation(formAddCard, enableValidation);
+
   openPopup(popupPlace);
+
+  document.addEventListener('keydown', checkEscapePress);
 });
 
 // Добавление события кнопке создания карточки
@@ -188,8 +219,6 @@ formAddCard.addEventListener('submit', submitAddCardForm);
 
 // Добавление события кнопке закрытия попапа редактирования профиля
 buttonCloseEditAvatarPopup.addEventListener('click', () => {
-  formEditAvatar.reset();
-
   closePopup(popupAvatar);
 });
 
@@ -200,8 +229,6 @@ buttonCloseEditProfilePopup.addEventListener('click', () => {
 
 // Добавление события кнопке закрытия попапа добавления карточки
 buttonCloseAddCardPopup.addEventListener('click', () => {
-  formAddCard.reset();
-
   closePopup(popupPlace);
 });
 
@@ -219,19 +246,9 @@ buttonCloseImgPopup.addEventListener('click', () => {
 page.querySelectorAll('.popup').forEach(pop => {
   pop.addEventListener('click', evt => {
     if (evt.target.classList.contains('popup')) {
-      formEditAvatar.reset();
-      formAddCard.reset();
-
-      closePopup(pop);
-    }
-  });
-
-  document.addEventListener('keydown', evt => {
-    if (evt.key === 'Escape' && pop.classList.contains('popup_opened')) {
-      formEditAvatar.reset();
-      formAddCard.reset();
-
       closePopup(pop);
     }
   });
 });
+
+enableFormValidation(enableValidation);
