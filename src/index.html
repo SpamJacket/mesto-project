@@ -6,15 +6,12 @@
     <meta name="description" content="Mesto - социальная сеть, где можно поделиться своими фотографиями, от Александра Сваткова">
     <meta name="keywords" content="HTML5, CSS, адаптивная верстка, фотографии, социальная сеть, обучение">
     <meta name="author" content="Александр Сватков">
-
-    <link rel="stylesheet" href="./pages/index.css">
-
     <title>Mesto</title>
 </head>
 <body>
     <div class="page">
         <header class="header">
-            <img class="header__logo" src="./images/logo-white.svg" alt="Логотип">
+            <img class="header__logo" src="<%=require('./images/logo-white.svg')%>" alt="Логотип">
         </header>
 
         <main class="content">
@@ -91,7 +88,7 @@
                 <button class="popup__close-button popup__close-button_type_full-img" type="button" aria-label="Закрыть"></button>
 
                 <figure class="popup__full-img">
-                    <img class="popup__image" src="./images/karachaevsk.jpg" alt="Собор в Карачаевске">
+                    <img class="popup__image" src="#" alt="">
                     <figcaption class="popup__caption">Карачаево-Черкессия</figcaption>
                 </figure>
             </div>
@@ -136,6 +133,5 @@
             <button class="gallery__like" type="button" aria-label="Лайк"></button>
         </li>
     </template>
-    <script type="module" src="./src/script.js"></script>
 </body>
 </html>
