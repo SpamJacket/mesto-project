@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Mesto - социальная сеть, где можно поделиться своими фотографиями, от Александра Сваткова">
+    <meta name="keywords" content="HTML5, CSS, адаптивная верстка, фотографии, социальная сеть, обучение">
+    <meta name="author" content="Александр Сватков">
+    <title>Mesto</title>
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <img class="header__logo" src="<%=require('./images/logo-white.svg')%>" alt="Логотип">
+        </header>
+
+        <main class="content">
+            <section class="profile">
+                <div class="profile__avatar"></div>
+
+                <div class="profile__info">
+                    <h1 class="profile__name">Жак-Ив Кусто</h1>
+
+                    <button class="profile__edit-button" aria-label="Изменить профиль" type="button"></button>
+
+                    <p class="profile__activity">Исследователь океана</p>
+                </div>
+
+                <button class="profile__add-button" type="button" aria-label="Добавить фото"></button>
+            </section>
+
+
+            <section class="gallery">
+                <ul class="gallery__list">
+                </ul>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p class="footer__text">&#169; 2020 Mesto Russia</p>
+        </footer>
+
+        <div class="popup popup_type_profile">
+            <div class="popup__container">
+                <button class="popup__close-button" type="button" aria-label="Закрыть"></button>
+
+                <h2 class="popup__title">Редактировать профиль</h2>
+
+                <form class="popup__form popup__form_type_profile" name="profileForm">
+                    <input class="popup__input popup__input_text_name" id="name" name="profileName" type="text" value=""
+                    placeholder="Введите имя" required minlength="2" maxlength="40" pattern="^[a-zA-zа-яА-я\s-]+$"
+                    data-text-error="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы">
+                    <span class="popup__input-error name-error"></span>
+
+                    <input class="popup__input popup__input_text_activity" id="activity" name="profileActivity" type="text" value=""
+                    placeholder="Введите статус" required minlength="2" maxlength="200" pattern="^[a-zA-zа-яА-я\s-]+$"
+                    data-text-error="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы">
+                    <span class="popup__input-error activity-error"></span>
+
+                    <button class="popup__submit-button" type="submit">Сохранить</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="popup popup_type_place">
+            <div class="popup__container">
+                <button class="popup__close-button" type="button" aria-label="Закрыть"></button>
+
+                <h2 class="popup__title">Новое место</h2>
+
+                <form class="popup__form popup__form_type_place" name="placeForm">
+                    <input class="popup__input popup__input_text_title" id="title" name="placeTitle" type="text" value=""
+                    placeholder="Название" required minlength="2" maxlength="30" pattern="^[a-zA-zа-яА-я\s-]+$"
+                    data-text-error="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы">
+                    <span class="popup__input-error title-error"></span>
+
+                    <input class="popup__input popup__input_text_link" id="place-link" name="placeLink" type="url" value=""
+                    placeholder="Ссылка на картинку" required>
+                    <span class="popup__input-error place-link-error"></span>
+
+                    <button class="popup__submit-button" type="submit">Создать</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="popup popup_type_img">
+            <div class="popup__container popup__container_type_full-img">
+                <button class="popup__close-button popup__close-button_type_full-img" type="button" aria-label="Закрыть"></button>
+
+                <figure class="popup__full-img">
+                    <img class="popup__image" src="#" alt="">
+                    <figcaption class="popup__caption">Карачаево-Черкессия</figcaption>
+                </figure>
+            </div>
+        </div>
+
+        <div class="popup popup_type_avatar">
+            <div class="popup__container">
+                <button class="popup__close-button" type="button" aria-label="Закрыть"></button>
+
+                <h2 class="popup__title">Обновить аватар</h2>
+
+                <form class="popup__form popup__form_type_avatar" name="avatarForm">
+                    <input class="popup__input popup__input_text_link" id="avatar-link" name="avatarLink" type="url" value=""
+                    placeholder="Ссылка на картинку" required>
+                    <span class="popup__input-error avatar-link-error"></span>
+
+                    <button class="popup__submit-button" type="submit">Сохранить</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="popup popup_type_accept-delete">
+            <div class="popup__container">
+                <button class="popup__close-button" type="button" aria-label="Закрыть"></button>
+
+                <h2 class="popup__title">Вы уверены?</h2>
+
+                <form class="popup__form popup__form_type_accept-delete" name="acceptDeleteForm">
+                    <button class="popup__submit-button" type="submit">Да</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <template id="gallery-item">
+        <li class="gallery__item">
+            <button class="gallery__delete-button" type="button" aria-label="Удалить"></button>
+
+            <img class="gallery__image">
+
+            <h2 class="gallery__title"></h2>
+
+            <button class="gallery__like" type="button" aria-label="Лайк"></button>
+        </li>
+    </template>
+</body>
+</html>
