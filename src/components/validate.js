@@ -1,16 +1,16 @@
 // Проход по всем формам с дальнейшим добавлением слушателей для полей формы
-function enableFormValidation(enableValidation) {
-  const forms = Array.from(document.querySelectorAll(enableValidation.formSelector));
+function enableValidation(validationConfig) {
+  const forms = Array.from(document.querySelectorAll(validationConfig.formSelector));
 
   forms.forEach(formElement => {
-    setEventListeners(formElement, enableValidation);
+    setEventListeners(formElement, validationConfig);
   });
 }
 
 // Проход по всем полям формы с добавлением слушателя проверки валидации
 // Вызов функции включения/выключения кнопки при валидных/невалидных полях формы
-function setEventListeners(formElement, enableValidation) {
-  const { inputSelector, submitButtonSelector, inactiveButtonClass, inputErrorClass, errorClass } = enableValidation;
+function setEventListeners(formElement, validationConfig) {
+  const { inputSelector, submitButtonSelector, inactiveButtonClass, inputErrorClass, errorClass } = validationConfig;
 
   const inputs = Array.from(formElement.querySelectorAll(inputSelector));
   const buttonElement = formElement.querySelector(submitButtonSelector);
@@ -65,8 +65,10 @@ function hideInputError(formElement, inputElement, { inputErrorClass, errorClass
 function toggleButtonState(inputs, buttonElement, inactiveButtonClass) {
   if (hasInvalidInput(inputs)) {
     buttonElement.classList.add(inactiveButtonClass);
+    buttonElement.disabled = true;
   } else {
     buttonElement.classList.remove(inactiveButtonClass);
+    buttonElement.disabled = false;
   }
 }
 
@@ -78,8 +80,8 @@ function hasInvalidInput(inputs) {
 }
 
 // Сброс валидации
-function resetEnableFormValidation(formElement, enableValidation) {
-  const { inputSelector, submitButtonSelector, inactiveButtonClass, inputErrorClass, errorClass } = enableValidation;
+function resetEnableValidation(formElement, validationConfig) {
+  const { inputSelector, submitButtonSelector, inactiveButtonClass, inputErrorClass, errorClass } = validationConfig;
 
   const inputs = Array.from(formElement.querySelectorAll(inputSelector));
   const buttonElement = formElement.querySelector(submitButtonSelector);
@@ -91,4 +93,4 @@ function resetEnableFormValidation(formElement, enableValidation) {
   });
 }
 
-export { enableFormValidation, resetEnableFormValidation }
+export { enableValidation, resetEnableValidation }

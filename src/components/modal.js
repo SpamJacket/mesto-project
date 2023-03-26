@@ -1,48 +1,29 @@
-import { page, content,
-        popupAvatar, popupProfile, popupPlace,
-        formEditAvatar, formEditProfile, formAddCard,
-        linkPopupAvatar,
-        namePopupProfile, activityPopupProfile, nameProfile, activityProfile,
-        titlePopupPlace, linkPopupPlace,
-        buttonOpenAvatarPopup } from './constants.js'
-import { closePopup, addCard } from './utils.js';
+import { page } from './constants.js';
 
-// Подтягивание значений из профиля в попап редактирования профиля
-function fillInEditProfileFormInputs() {
-  namePopupProfile.value = nameProfile.textContent;
-  activityPopupProfile.value = activityProfile.textContent;
+// Открытие попапа
+function openPopup(popup) {
+  popup.classList.add('popup_opened');
+
+  // Добавление события закрытия попапа по нажатию на esc 
+  document.addEventListener('keydown', checkEscapePress);
 }
 
-// Сохранение аватара
-function submitEditAvatarForm(evt) {
-  evt.preventDefault();
+// Закрытие попапа
+function closePopup(popup) {
+  popup.classList.remove('popup_opened');
 
-  if (linkPopupAvatar.value !== '') {
-    buttonOpenAvatarPopup.style = `background-image: url("${linkPopupAvatar.value}")`;
+  // Удаление события закрытия попапа по нажатию на esc
+  document.removeEventListener('keydown', checkEscapePress);
+}
 
-    closePopup(popupAvatar);
+// Проверка esc ли нажат и закрытие попапа, если нажат он
+function checkEscapePress(evt) {
+  // Переменная для открытого сейчас попапа
+  const popup = page.querySelector('.popup_opened');
+
+  if (evt.key === 'Escape' && popup) {    
+    closePopup(popup);
   }
 }
 
-// Сохранение новых значений полей профиля
-function submitEditProfileForm(evt) {
-  evt.preventDefault();
-
-  nameProfile.textContent = namePopupProfile.value;
-  activityProfile.textContent = activityPopupProfile.value;
-
-  closePopup(popupProfile);
-}
-
-// Добавления карточки из формы
-function submitAddCardForm(evt) {
-  evt.preventDefault();
-
-  if (titlePopupPlace.value !== '' && linkPopupPlace.value !== '') {
-    addCard(titlePopupPlace.value, linkPopupPlace.value);
-
-    closePopup(popupPlace);
-  }
-}
-
-export { fillInEditProfileFormInputs, submitEditAvatarForm, submitEditProfileForm, submitAddCardForm };
+export { openPopup, closePopup, checkEscapePress };

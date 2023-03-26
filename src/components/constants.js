@@ -96,7 +96,7 @@ const initialCards = [
 ];
 
 // Объект настроек для валидации
-const enableValidation = {
+const validationConfig = {
   formSelector: '.popup__form',
   inputSelector: '.popup__input',
   submitButtonSelector: '.popup__submit-button',
@@ -115,4 +115,4 @@ export { page, content,
         cardTemplate, galleryList,
         buttonOpenAvatarPopup, buttonOpenEditProfilePopup, buttonOpenAddCardPopup,
         buttonCloseEditAvatarPopup, buttonCloseEditProfilePopup, buttonCloseAddCardPopup, buttonCloseAcceptDeletePopup, buttonCloseImgPopup,
-        initialCards, enableValidation }
+        initialCards, validationConfig }

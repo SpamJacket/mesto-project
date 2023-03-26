@@ -1,12 +1,12 @@
-import { page, content,
-        popupAvatar, popupProfile, popupPlace, popupImg, popupAcceptDelete,
+import { page,
+        popupAvatar, popupProfile, popupPlace,
         formEditAvatar, formEditProfile, formAddCard,
         buttonOpenAvatarPopup, buttonOpenEditProfilePopup, buttonOpenAddCardPopup,
-        buttonCloseEditAvatarPopup, buttonCloseEditProfilePopup, buttonCloseAddCardPopup, buttonCloseAcceptDeletePopup, buttonCloseImgPopup,
-        initialCards, enableValidation } from './constants.js';
-import { addCard, openPopup, closePopup, checkEscapePress } from './utils.js';
-import { submitEditAvatarForm, submitEditProfileForm, submitAddCardForm, fillInEditProfileFormInputs } from './modal.js';
-import { enableFormValidation, resetEnableFormValidation } from './validate.js';
+        initialCards, validationConfig } from './constants.js';
+import { openPopup, closePopup } from './modal.js';
+import { addCard } from './cards.js';
+import { submitEditAvatarForm, submitEditProfileForm, submitAddCardForm, fillInEditProfileFormInputs } from './utils.js';
+import { enableValidation, resetEnableValidation } from './validate.js';
 
 // Основная функция запускающая все
 export default function main(){
@@ -19,11 +19,9 @@ export default function main(){
   buttonOpenAvatarPopup.addEventListener('click', () => {
     formEditAvatar.reset();
 
-    resetEnableFormValidation(formEditAvatar, enableValidation);
+    resetEnableValidation(formEditAvatar, validationConfig);
     
     openPopup(popupAvatar);
-
-    document.addEventListener('keydown', checkEscapePress);
   });
 
   // Добавление события кнопке сохранения попапа редактирования аватара
@@ -33,13 +31,9 @@ export default function main(){
   buttonOpenEditProfilePopup.addEventListener('click', () => {
     fillInEditProfileFormInputs();
 
-    formAddCard.reset();
-    
-    resetEnableFormValidation(formEditProfile, enableValidation);
+    resetEnableValidation(formEditProfile, validationConfig);
 
     openPopup(popupProfile);
-
-    document.addEventListener('keydown', checkEscapePress);
   });
 
   // Добавление события кнопке сохранения попапа редактирования профиля
@@ -49,49 +43,30 @@ export default function main(){
   buttonOpenAddCardPopup.addEventListener('click', () => {
     formAddCard.reset();
     
-    resetEnableFormValidation(formAddCard, enableValidation);
+    resetEnableValidation(formAddCard, validationConfig);
 
     openPopup(popupPlace);
-
-    document.addEventListener('keydown', checkEscapePress);
   });
 
   // Добавление события кнопке создания карточки
   formAddCard.addEventListener('submit', submitAddCardForm);
 
-  // Добавление события кнопке закрытия попапа редактирования профиля
-  buttonCloseEditAvatarPopup.addEventListener('click', () => {
-    closePopup(popupAvatar);
-  });
-
-  // Добавление события кнопке закрытия попапа редактирования профиля
-  buttonCloseEditProfilePopup.addEventListener('click', () => {
-    closePopup(popupProfile);
-  });
-
-  // Добавление события кнопке закрытия попапа добавления карточки
-  buttonCloseAddCardPopup.addEventListener('click', () => {
-    closePopup(popupPlace);
-  });
-
-  // Добавление события кнопке закрытия попапа подтверждения удаления
-  buttonCloseAcceptDeletePopup.addEventListener('click', () => {
-    closePopup(popupAcceptDelete);
-  });
-
-  // Добавление события кнопке закрытия попапа просмотра изображений
-  buttonCloseImgPopup.addEventListener('click', () => {
-    closePopup(popupImg);
-  });
+  // Добавление события кнопкам закрытия попапа
+  page.querySelectorAll('.popup__close-button').forEach(button => {
+    const buttonsPopup = button.closest('.popup');
+    button.addEventListener('click', () => {
+      closePopup(buttonsPopup);
+    })
+  })
 
   // Добавление события закрытия попапа нажатием на оверлэй или esc
   page.querySelectorAll('.popup').forEach(popup => {
-    popup.addEventListener('click', evt => {
+    popup.addEventListener('mousedown', evt => {
       if (evt.target.classList.contains('popup')) {
         closePopup(popup);
       }
     });
   });
 
-  enableFormValidation(enableValidation);
+  enableValidation(validationConfig);
 }
