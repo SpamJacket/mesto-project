@@ -31,3 +31,11 @@
 .popup__submit-button:focus {
   outline: none;
 }
+
+.popup__submit-button:disabled {
+  cursor: default;
+}
+
+.popup__submit-button:disabled:hover {
+  opacity: 1;
+}
