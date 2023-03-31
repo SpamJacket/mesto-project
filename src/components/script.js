@@ -2,21 +2,19 @@ import { page,
         popupAvatar, popupProfile, popupPlace,
         formEditAvatar, formEditProfile, formAddCard,
         buttonOpenAvatarPopup, buttonOpenEditProfilePopup, buttonOpenAddCardPopup,
-        initialCards, validationConfig } from './constants.js';
+        validationConfig } from './constants.js';
 import { openPopup, closePopup } from './modal.js';
-import { addCard } from './cards.js';
-import { submitEditAvatarForm, submitEditProfileForm, submitAddCardForm, fillInEditProfileFormInputs, getCards } from './utils.js';
+import { submitEditAvatarForm, submitEditProfileForm, submitAddCardForm, fillInEditProfileFormInputs } from './utils.js';
 import { enableValidation, resetEnableValidation } from './validate.js';
-import { getUserProfileData } from './utils.js';
+import { getUserProfileData, getInitialCards } from './initialize.js';
 
 // Основная функция запускающая все
 export default function main(){
+  // Получаем и устанавливаем имя и хобби профиля с сервера
   getUserProfileData('/users/me');
 
-  // Добавление карточек из начального списка при загрузке страницы
-  initialCards.forEach(item => {
-    addCard(item.name, item.link)
-  });
+  // Получаем и добавляем карточки с сервера
+  getInitialCards('/cards');
 
   // Добавление события аватару открытия попапа по  клику
   buttonOpenAvatarPopup.addEventListener('click', () => {

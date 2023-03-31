@@ -1,3 +1,4 @@
+// Конфиг для создания fetch запросов
 const config = {
   baseUrl: 'https://nomoreparties.co/v1/plus-cohort-22',
   headers: {
@@ -6,6 +7,7 @@ const config = {
   }
 }
 
+// Функция создания fetch запроса
 async function createFetch(url, met) {
   return fetch(config.baseUrl + url, {
     method: met,

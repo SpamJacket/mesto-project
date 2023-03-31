@@ -60,41 +60,6 @@ const buttonCloseAcceptDeletePopup = page.querySelector('.popup_type_accept-dele
 // просмотра полного изображения
 const buttonCloseImgPopup = page.querySelector('.popup_type_img .popup__close-button');
 
-// Создание массива объектов с названием и ссылкой для карточки
-const baikalImage = new URL('../images/baikal.jpg', import.meta.url);
-const holmogorskImage = new URL('../images/kholmogorsky-rayon.jpg', import.meta.url);
-const kamchatkaImage = new URL('../images/kamchatka.jpg', import.meta.url);
-const ivanovoImage = new URL('../images/ivanovo.jpg', import.meta.url);
-const chelyabinskImage = new URL('../images/chelyabinsk-oblast.jpg', import.meta.url);
-const arkhizImage = new URL('../images/arkhyz.jpg', import.meta.url);
-
-const initialCards = [
-  {
-    name: 'Байкал',
-    link: baikalImage
-  },
-  {
-    name: 'Холмогорский район',
-    link: holmogorskImage
-  },
-  {
-    name: 'Камчатка',
-    link: kamchatkaImage
-  },
-  {
-    name: 'Иваново',
-    link: ivanovoImage
-  },
-  {
-    name: 'Челябинская область',
-    link: chelyabinskImage
-  },
-  {
-    name: 'Архыз',
-    link: arkhizImage
-  }
-];
-
 // Объект настроек для валидации
 const validationConfig = {
   formSelector: '.popup__form',
