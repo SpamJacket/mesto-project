@@ -18,11 +18,8 @@ function closePopup(popup) {
 
 // Проверка esc ли нажат и закрытие попапа, если нажат он
 function checkEscapePress(evt) {
-  // Переменная для открытого сейчас попапа
-  const popup = page.querySelector('.popup_opened');
-
-  if (evt.key === 'Escape' && popup) {    
-    closePopup(popup);
+  if (evt.key === 'Escape') {    
+    closePopup(page.querySelector('.popup_opened'));
   }
 }
 

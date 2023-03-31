@@ -5,6 +5,7 @@ import { popupAvatar, popupProfile, popupPlace,
         buttonOpenAvatarPopup} from './constants.js';
 import { closePopup } from './modal.js';
 import { addCard } from './cards.js';
+import { createFetch } from './api.js';
 
 // Подтягивание значений из профиля в попап редактирования профиля
 function fillInEditProfileFormInputs() {
@@ -40,4 +41,16 @@ function submitAddCardForm(evt) {
   closePopup(popupPlace);
 }
 
-export { fillInEditProfileFormInputs, submitEditAvatarForm, submitEditProfileForm, submitAddCardForm };
+function setProfileInfo(data) {
+  nameProfile.textContent = data.name;
+  activityProfile.textContent = data.about;
+  buttonOpenAvatarPopup.style = `background-image: url('${data.avatar}');`
+}
+
+function getUserProfileData(url) {
+  createFetch(url, 'GET')
+    .then(setProfileInfo)
+    .catch(err => console.log(err));
+}
+
+export { fillInEditProfileFormInputs, submitEditAvatarForm, submitEditProfileForm, submitAddCardForm, getUserProfileData };

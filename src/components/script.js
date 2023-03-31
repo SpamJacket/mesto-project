@@ -5,11 +5,14 @@ import { page,
         initialCards, validationConfig } from './constants.js';
 import { openPopup, closePopup } from './modal.js';
 import { addCard } from './cards.js';
-import { submitEditAvatarForm, submitEditProfileForm, submitAddCardForm, fillInEditProfileFormInputs } from './utils.js';
+import { submitEditAvatarForm, submitEditProfileForm, submitAddCardForm, fillInEditProfileFormInputs, getCards } from './utils.js';
 import { enableValidation, resetEnableValidation } from './validate.js';
+import { getUserProfileData } from './utils.js';
 
 // Основная функция запускающая все
 export default function main(){
+  getUserProfileData('/users/me');
+
   // Добавление карточек из начального списка при загрузке страницы
   initialCards.forEach(item => {
     addCard(item.name, item.link)
