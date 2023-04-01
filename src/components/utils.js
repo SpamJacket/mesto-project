@@ -5,7 +5,7 @@ import { popupAvatar, popupProfile, popupPlace,
         buttonOpenAvatarPopup} from './constants.js';
 import { closePopup } from './modal.js';
 import { addCard } from './cards.js';
-import { createProfileInfoPatchFetch, createAvatarPatchFetch } from './api.js';
+import { createProfileInfoPatchFetch, createAvatarPatchFetch, createCardPostFetch } from './api.js';
 
 // Подтягивание значений из профиля в попап редактирования профиля
 function fillInEditProfileFormInputs() {
@@ -41,6 +41,9 @@ function submitEditProfileForm(evt) {
 function submitAddCardForm(evt) {
   evt.preventDefault();
   
+  // Отправка на сервер данных новой карточки
+  createCardPostFetch('/cards', titlePopupPlace.value, linkPopupPlace.value);
+
   addCard(titlePopupPlace.value, linkPopupPlace.value);
 
   closePopup(popupPlace);

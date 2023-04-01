@@ -42,7 +42,19 @@ async function createAvatarPatchFetch(url, avatarUrl) {
     body: JSON.stringify({
       avatar: avatarUrl
     })
-  })
+  });
 }
 
-export { createGetFetch, createProfileInfoPatchFetch, createAvatarPatchFetch };
+// Функция создания post fetch запроса для карточки
+async function createCardPostFetch(url, name, link) {
+  return fetch(config.baseUrl + url, {
+    method: 'POST',
+    headers: config.headers,
+    body: JSON.stringify({
+      name: name,
+      link: link
+    })
+  });
+}
+
+export { createGetFetch, createProfileInfoPatchFetch, createAvatarPatchFetch, createCardPostFetch };
