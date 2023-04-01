@@ -34,4 +34,15 @@ async function createProfileInfoPatchFetch(url, name, about) {
   });
 }
 
-export { createGetFetch, createProfileInfoPatchFetch };
+// Функция создания patch fetch запроса для аватара
+async function createAvatarPatchFetch(url, avatarUrl) {
+  return fetch(config.baseUrl + url, {
+    method: 'PATCH',
+    headers: config.headers,
+    body: JSON.stringify({
+      avatar: avatarUrl
+    })
+  })
+}
+
+export { createGetFetch, createProfileInfoPatchFetch, createAvatarPatchFetch };

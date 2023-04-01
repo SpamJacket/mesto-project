@@ -5,7 +5,7 @@ import { popupAvatar, popupProfile, popupPlace,
         buttonOpenAvatarPopup} from './constants.js';
 import { closePopup } from './modal.js';
 import { addCard } from './cards.js';
-import { createProfileInfoPatchFetch } from './api.js';
+import { createProfileInfoPatchFetch, createAvatarPatchFetch } from './api.js';
 
 // Подтягивание значений из профиля в попап редактирования профиля
 function fillInEditProfileFormInputs() {
@@ -16,6 +16,8 @@ function fillInEditProfileFormInputs() {
 // Сохранение аватара
 function submitEditAvatarForm(evt) {
   evt.preventDefault();
+
+  createAvatarPatchFetch('/users/me/avatar', linkPopupAvatar.value);
 
   buttonOpenAvatarPopup.style = `background-image: url("${linkPopupAvatar.value}")`;
 
