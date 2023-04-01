@@ -7,10 +7,10 @@ const config = {
   }
 }
 
-// Функция создания fetch запроса
-async function createFetch(url, met) {
+// Функция создания get fetch запроса
+async function createGetFetch(url) {
   return fetch(config.baseUrl + url, {
-    method: met,
+    method: 'GET',
     headers: config.headers
   })
     .then(res => {
@@ -22,4 +22,16 @@ async function createFetch(url, met) {
     });
 }
 
-export { createFetch };
+// Функция создания patch fetch запроса для информации в профиле
+async function createProfileInfoPatchFetch(url, name, about) {
+  return fetch(config.baseUrl + url, {
+    method: 'PATCH',
+    headers: config.headers,
+    body: JSON.stringify({
+      name: name,
+      about: about
+    })
+  });
+}
+
+export { createGetFetch, createProfileInfoPatchFetch };

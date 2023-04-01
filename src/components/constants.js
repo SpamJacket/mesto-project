@@ -80,4 +80,4 @@ export { page, content,
         cardTemplate, galleryList,
         buttonOpenAvatarPopup, buttonOpenEditProfilePopup, buttonOpenAddCardPopup,
         buttonCloseEditAvatarPopup, buttonCloseEditProfilePopup, buttonCloseAddCardPopup, buttonCloseAcceptDeletePopup, buttonCloseImgPopup,
-        initialCards, validationConfig }
+        validationConfig }

@@ -1,11 +1,11 @@
-import { createFetch } from "./api.js";
+import { createGetFetch } from "./api.js";
 import { nameProfile, activityProfile,
         buttonOpenAvatarPopup } from "./constants.js";
 import { addCard } from "./cards.js";
 
 // Получим данные профиля с сервера
 function getUserProfileData(url) {
-  createFetch(url, 'GET')
+  createGetFetch(url)
     .then(setProfileInfo)
     .catch(err => console.log(err));
 }
@@ -19,7 +19,7 @@ function setProfileInfo(data) {
 
 // Получим массив карточек с сервера
 function getInitialCards(url) {
-  createFetch(url, 'GET')
+  createGetFetch(url)
     .then(setCard)
     .catch(err => console.log(err));
 }

@@ -5,6 +5,7 @@ import { popupAvatar, popupProfile, popupPlace,
         buttonOpenAvatarPopup} from './constants.js';
 import { closePopup } from './modal.js';
 import { addCard } from './cards.js';
+import { createProfileInfoPatchFetch } from './api.js';
 
 // Подтягивание значений из профиля в попап редактирования профиля
 function fillInEditProfileFormInputs() {
@@ -24,6 +25,9 @@ function submitEditAvatarForm(evt) {
 // Сохранение новых значений полей профиля
 function submitEditProfileForm(evt) {
   evt.preventDefault();
+
+  // Отправка на сервер новых данных о инофрмации в профиле
+  createProfileInfoPatchFetch('/users/me', namePopupProfile.value, activityPopupProfile.value);
 
   nameProfile.textContent = namePopupProfile.value;
   activityProfile.textContent = activityPopupProfile.value;
