@@ -19,6 +19,16 @@ const formAddCard = document.forms.placeForm;
 // попапа подтверждения удаления 
 const formDeleteCard = document.forms.acceptDeleteForm;
 
+// Кнопки субмита
+// редактирования аватара
+const buttonSubmitAvatarForm = formEditAvatar.querySelector('.popup__submit-button');
+// редактирования профиля
+const buttonSubmitProfileForm = formEditProfile.querySelector('.popup__submit-button');
+// добавления карточки
+const buttonSubmitCardForm = formAddCard.querySelector('.popup__submit-button');
+// подтверждения удаления
+const buttonSubmitDeleteCardForm = formDeleteCard.querySelector('.popup__submit-button');
+
 // Поля ввода попапа редактирования аватара
 const linkPopupAvatar = formEditAvatar.elements.avatarLink;
 
@@ -60,41 +70,6 @@ const buttonCloseAcceptDeletePopup = page.querySelector('.popup_type_accept-dele
 // просмотра полного изображения
 const buttonCloseImgPopup = page.querySelector('.popup_type_img .popup__close-button');
 
-// Создание массива объектов с названием и ссылкой для карточки
-const baikalImage = new URL('../images/baikal.jpg', import.meta.url);
-const holmogorskImage = new URL('../images/kholmogorsky-rayon.jpg', import.meta.url);
-const kamchatkaImage = new URL('../images/kamchatka.jpg', import.meta.url);
-const ivanovoImage = new URL('../images/ivanovo.jpg', import.meta.url);
-const chelyabinskImage = new URL('../images/chelyabinsk-oblast.jpg', import.meta.url);
-const arkhizImage = new URL('../images/arkhyz.jpg', import.meta.url);
-
-const initialCards = [
-  {
-    name: 'Байкал',
-    link: baikalImage
-  },
-  {
-    name: 'Холмогорский район',
-    link: holmogorskImage
-  },
-  {
-    name: 'Камчатка',
-    link: kamchatkaImage
-  },
-  {
-    name: 'Иваново',
-    link: ivanovoImage
-  },
-  {
-    name: 'Челябинская область',
-    link: chelyabinskImage
-  },
-  {
-    name: 'Архыз',
-    link: arkhizImage
-  }
-];
-
 // Объект настроек для валидации
 const validationConfig = {
   formSelector: '.popup__form',
@@ -105,14 +80,26 @@ const validationConfig = {
   errorClass: 'popup__input-error_active'
 };
 
-export { page, content,
-        popupAvatar, popupProfile, popupPlace, popupImg, popupAcceptDelete,
-        formEditAvatar, formEditProfile, formAddCard, formDeleteCard,
-        linkPopupAvatar,
-        namePopupProfile, activityPopupProfile, nameProfile, activityProfile,
-        titlePopupPlace, linkPopupPlace,
-        imagePopupImg, captionPopupImg,
-        cardTemplate, galleryList,
-        buttonOpenAvatarPopup, buttonOpenEditProfilePopup, buttonOpenAddCardPopup,
-        buttonCloseEditAvatarPopup, buttonCloseEditProfilePopup, buttonCloseAddCardPopup, buttonCloseAcceptDeletePopup, buttonCloseImgPopup,
-        initialCards, validationConfig }
+// Конфиг для создания fetch запросов
+const fetchConfig = {
+  baseUrl: 'https://nomoreparties.co/v1/plus-cohort-22',
+  headers: {
+    authorization: 'cb17d783-a9d0-4eeb-a054-218c1a23615d',
+    'Content-Type': 'application/json'
+  }
+};
+
+export {
+  page, content,
+  popupAvatar, popupProfile, popupPlace, popupImg, popupAcceptDelete,
+  formEditAvatar, formEditProfile, formAddCard, formDeleteCard,
+  buttonSubmitAvatarForm, buttonSubmitProfileForm, buttonSubmitCardForm, buttonSubmitDeleteCardForm,
+  linkPopupAvatar,
+  namePopupProfile, activityPopupProfile, nameProfile, activityProfile,
+  titlePopupPlace, linkPopupPlace,
+  imagePopupImg, captionPopupImg,
+  cardTemplate, galleryList,
+  buttonOpenAvatarPopup, buttonOpenEditProfilePopup, buttonOpenAddCardPopup,
+  buttonCloseEditAvatarPopup, buttonCloseEditProfilePopup, buttonCloseAddCardPopup, buttonCloseAcceptDeletePopup, buttonCloseImgPopup,
+  validationConfig, fetchConfig,
+};

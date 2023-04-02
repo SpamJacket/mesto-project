@@ -19,11 +19,11 @@
                 <div class="profile__avatar"></div>
 
                 <div class="profile__info">
-                    <h1 class="profile__name">Жак-Ив Кусто</h1>
+                    <h1 class="profile__name"></h1>
 
                     <button class="profile__edit-button" aria-label="Изменить профиль" type="button"></button>
 
-                    <p class="profile__activity">Исследователь океана</p>
+                    <p class="profile__activity"></p>
                 </div>
 
                 <button class="profile__add-button" type="button" aria-label="Добавить фото"></button>
@@ -48,12 +48,12 @@
 
                 <form class="popup__form popup__form_type_profile" name="profileForm">
                     <input class="popup__input popup__input_text_name" id="name" name="profileName" type="text" value=""
-                    placeholder="Введите имя" required minlength="2" maxlength="40" pattern="^[a-zA-zа-яА-я\s-]+$"
+                    placeholder="Введите имя" required minlength="2" maxlength="40" pattern="^[a-zA-zа-яА-яёЁ\s-]+$"
                     data-text-error="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы">
                     <span class="popup__input-error name-error"></span>
 
                     <input class="popup__input popup__input_text_activity" id="activity" name="profileActivity" type="text" value=""
-                    placeholder="Введите статус" required minlength="2" maxlength="200" pattern="^[a-zA-zа-яА-я\s-]+$"
+                    placeholder="Введите статус" required minlength="2" maxlength="200" pattern="^[a-zA-zа-яА-яёЁ\s-]+$"
                     data-text-error="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы">
                     <span class="popup__input-error activity-error"></span>
 
@@ -70,7 +70,7 @@
 
                 <form class="popup__form popup__form_type_place" name="placeForm">
                     <input class="popup__input popup__input_text_title" id="title" name="placeTitle" type="text" value=""
-                    placeholder="Название" required minlength="2" maxlength="30" pattern="^[a-zA-zа-яА-я\s-]+$"
+                    placeholder="Название" required minlength="2" maxlength="30" pattern="^[a-zA-zа-яА-яёЁ\s-]+$"
                     data-text-error="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы">
                     <span class="popup__input-error title-error"></span>
 
@@ -130,7 +130,10 @@
 
             <h2 class="gallery__title"></h2>
 
-            <button class="gallery__like" type="button" aria-label="Лайк"></button>
+            <div class="gallery__like-container">
+                <button class="gallery__like" type="button" aria-label="Лайк"></button>
+                <p class="gallery__like-counter"></p>
+            </div>
         </li>
     </template>
 </body>

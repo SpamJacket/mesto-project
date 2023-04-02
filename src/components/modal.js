@@ -1,4 +1,6 @@
-import { page } from './constants.js';
+import {
+  page,
+} from './constants.js';
 
 // Открытие попапа
 function openPopup(popup) {
@@ -18,12 +20,34 @@ function closePopup(popup) {
 
 // Проверка esc ли нажат и закрытие попапа, если нажат он
 function checkEscapePress(evt) {
-  // Переменная для открытого сейчас попапа
-  const popup = page.querySelector('.popup_opened');
-
-  if (evt.key === 'Escape' && popup) {    
-    closePopup(popup);
+  if (evt.key === 'Escape') {    
+    closePopup(page.querySelector('.popup_opened'));
   }
 }
 
-export { openPopup, closePopup, checkEscapePress };
+// Добавление события закрытия попапа нажатием на оверлэй
+function addClosingPopupByClickingOnOverlay() {
+  page.querySelectorAll('.popup').forEach(popup => {
+    popup.addEventListener('mousedown', evt => {
+      if (evt.target.classList.contains('popup')) {
+        closePopup(popup);
+      }
+    });
+  });
+}
+
+// Добавление события кнопкам закрытия попапа
+function addClosingPopupByClickingOnCloseButton() {
+  page.querySelectorAll('.popup__close-button').forEach(button => {
+    const buttonsPopup = button.closest('.popup');
+    button.addEventListener('click', () => {
+      closePopup(buttonsPopup);
+    })
+  });
+}
+
+export {
+  openPopup, closePopup,
+  checkEscapePress,
+  addClosingPopupByClickingOnOverlay, addClosingPopupByClickingOnCloseButton,
+};

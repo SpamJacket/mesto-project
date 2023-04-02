@@ -1,25 +1,50 @@
-import { page,
-        popupAvatar, popupProfile, popupPlace,
-        formEditAvatar, formEditProfile, formAddCard,
-        buttonOpenAvatarPopup, buttonOpenEditProfilePopup, buttonOpenAddCardPopup,
-        initialCards, validationConfig } from './constants.js';
-import { openPopup, closePopup } from './modal.js';
-import { addCard } from './cards.js';
-import { submitEditAvatarForm, submitEditProfileForm, submitAddCardForm, fillInEditProfileFormInputs } from './utils.js';
-import { enableValidation, resetEnableValidation } from './validate.js';
+import {
+  popupAvatar, popupProfile, popupPlace,
+  formEditAvatar, formEditProfile, formAddCard,
+  buttonSubmitAvatarForm, buttonSubmitProfileForm, buttonSubmitCardForm,
+  namePopupProfile, activityPopupProfile, nameProfile, activityProfile,
+  linkPopupAvatar,
+  titlePopupPlace, linkPopupPlace,
+  buttonOpenAvatarPopup, buttonOpenEditProfilePopup, buttonOpenAddCardPopup,
+  galleryList,
+  validationConfig as config,
+} from './constants.js';
+import {
+  openPopup, closePopup,
+  addClosingPopupByClickingOnOverlay, addClosingPopupByClickingOnCloseButton,
+} from './modal.js';
+import {
+  renderLoading,
+} from './utils.js';
+import {
+  createCard,
+} from './cards.js';
+import {
+  enableValidation, resetEnableValidation,
+} from './validate.js';
+import {
+  getUserProfileData,
+  getInitialCards,
+} from './initialize.js';
+import {
+  createProfileInfoPatchFetch,
+  createAvatarPatchFetch,
+  createCardPostFetch,
+} from './api.js';
 
 // Основная функция запускающая все
 export default function main(){
-  // Добавление карточек из начального списка при загрузке страницы
-  initialCards.forEach(item => {
-    addCard(item.name, item.link)
-  });
+  // Получаем и устанавливаем имя и хобби профиля с сервера
+  getUserProfileData('/users/me');
+
+  // Получаем и добавляем карточки с сервера
+  getInitialCards('/cards');
 
   // Добавление события аватару открытия попапа по  клику
   buttonOpenAvatarPopup.addEventListener('click', () => {
     formEditAvatar.reset();
 
-    resetEnableValidation(formEditAvatar, validationConfig);
+    resetEnableValidation(formEditAvatar, config);
     
     openPopup(popupAvatar);
   });
@@ -31,7 +56,7 @@ export default function main(){
   buttonOpenEditProfilePopup.addEventListener('click', () => {
     fillInEditProfileFormInputs();
 
-    resetEnableValidation(formEditProfile, validationConfig);
+    resetEnableValidation(formEditProfile, config);
 
     openPopup(popupProfile);
   });
@@ -43,7 +68,7 @@ export default function main(){
   buttonOpenAddCardPopup.addEventListener('click', () => {
     formAddCard.reset();
     
-    resetEnableValidation(formAddCard, validationConfig);
+    resetEnableValidation(formAddCard, config);
 
     openPopup(popupPlace);
   });
@@ -51,22 +76,76 @@ export default function main(){
   // Добавление события кнопке создания карточки
   formAddCard.addEventListener('submit', submitAddCardForm);
 
-  // Добавление события кнопкам закрытия попапа
-  page.querySelectorAll('.popup__close-button').forEach(button => {
-    const buttonsPopup = button.closest('.popup');
-    button.addEventListener('click', () => {
-      closePopup(buttonsPopup);
-    })
-  })
+  addClosingPopupByClickingOnOverlay();
 
-  // Добавление события закрытия попапа нажатием на оверлэй или esc
-  page.querySelectorAll('.popup').forEach(popup => {
-    popup.addEventListener('mousedown', evt => {
-      if (evt.target.classList.contains('popup')) {
-        closePopup(popup);
-      }
-    });
-  });
+  addClosingPopupByClickingOnCloseButton();
 
-  enableValidation(validationConfig);
+  enableValidation(config);
 }
+
+// Подтягивание значений из профиля в попап редактирования профиля
+function fillInEditProfileFormInputs() {
+  namePopupProfile.value = nameProfile.textContent;
+  activityPopupProfile.value = activityProfile.textContent;
+}
+
+// Сохранение аватара
+function submitEditAvatarForm(evt) {
+  evt.preventDefault();
+
+  renderLoading(buttonSubmitAvatarForm, 'Сохранение...');
+
+  createAvatarPatchFetch('/users/me/avatar', linkPopupAvatar.value)
+    .catch(err => console.log(err))
+    .finally(() => renderLoading(buttonSubmitAvatarForm, 'Сохранить'));
+
+  buttonOpenAvatarPopup.style = `background-image: url("${linkPopupAvatar.value}")`;
+
+  closePopup(popupAvatar);
+}
+
+// Сохранение новых значений полей профиля
+function submitEditProfileForm(evt) {
+  evt.preventDefault();
+
+  renderLoading(buttonSubmitProfileForm, 'Сохранение...');
+
+  // Отправка на сервер новых данных о инофрмации в профиле
+  createProfileInfoPatchFetch('/users/me', namePopupProfile.value, activityPopupProfile.value)
+    .catch(err => console.log(err))
+    .finally(() => renderLoading(buttonSubmitProfileForm, 'Сохранить'));
+
+  nameProfile.textContent = namePopupProfile.value;
+  activityProfile.textContent = activityPopupProfile.value;
+
+  closePopup(popupProfile);
+}
+
+// Добавления карточки из формы
+function submitAddCardForm(evt) {
+  evt.preventDefault();
+  
+  renderLoading(buttonSubmitCardForm, 'Создание...');
+
+  // Отправка на сервер данных новой карточки
+  createCardPostFetch('/cards', titlePopupPlace.value, linkPopupPlace.value)
+    .then(addCard)
+    .catch(err => console.log(err))
+    .finally(() => renderLoading(buttonSubmitCardForm, 'Создать'));
+
+  closePopup(popupPlace);
+}
+
+// Добавление карточки в список с её созданием при добавлении пользователем
+function addCard(card) {
+  galleryList.prepend(createCard(card));
+}
+
+// Добавление карточки в список с её созданием при загрузке страницы
+function addInitialCard(card) {
+  galleryList.append(createCard(card));
+}
+
+export {
+  addCard, addInitialCard,
+};
