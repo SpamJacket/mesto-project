@@ -17,7 +17,8 @@ function fillInEditProfileFormInputs() {
 function submitEditAvatarForm(evt) {
   evt.preventDefault();
 
-  createAvatarPatchFetch('/users/me/avatar', linkPopupAvatar.value);
+  createAvatarPatchFetch('/users/me/avatar', linkPopupAvatar.value)
+    .catch(err => console.log(err));
 
   buttonOpenAvatarPopup.style = `background-image: url("${linkPopupAvatar.value}")`;
 
@@ -29,7 +30,8 @@ function submitEditProfileForm(evt) {
   evt.preventDefault();
 
   // Отправка на сервер новых данных о инофрмации в профиле
-  createProfileInfoPatchFetch('/users/me', namePopupProfile.value, activityPopupProfile.value);
+  createProfileInfoPatchFetch('/users/me', namePopupProfile.value, activityPopupProfile.value)
+    .catch(err => console.log(err));
 
   nameProfile.textContent = namePopupProfile.value;
   activityProfile.textContent = activityPopupProfile.value;

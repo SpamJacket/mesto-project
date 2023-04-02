@@ -64,6 +64,15 @@ async function createCardPostFetch(url, name, link) {
     });
 }
 
+// Функция создания delete fetch запроса для карточки
+async function createCardDeleteFetch(url) {
+  return fetch(config.baseUrl + url, {
+    method: 'DELETE',
+    headers: config.headers
+  })
+}
+
+// Функция создания запроса для добавления или удаления лайка
 async function createLikeFetch(url, met) {
   return fetch(config.baseUrl + url, {
     method: met,
@@ -78,4 +87,4 @@ async function createLikeFetch(url, met) {
     });
 }
 
-export { createGetFetch, createProfileInfoPatchFetch, createAvatarPatchFetch, createCardPostFetch, createLikeFetch };
+export { createGetFetch, createProfileInfoPatchFetch, createAvatarPatchFetch, createCardPostFetch, createLikeFetch, createCardDeleteFetch };
