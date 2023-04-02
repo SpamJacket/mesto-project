@@ -19,6 +19,16 @@ const formAddCard = document.forms.placeForm;
 // попапа подтверждения удаления 
 const formDeleteCard = document.forms.acceptDeleteForm;
 
+// Кнопки субмита
+// редактирования аватара
+const buttonSubmitAvatarForm = formEditAvatar.querySelector('.popup__submit-button');
+// редактирования профиля
+const buttonSubmitProfileForm = formEditProfile.querySelector('.popup__submit-button');
+// добавления карточки
+const buttonSubmitCardForm = formAddCard.querySelector('.popup__submit-button');
+// подтверждения удаления
+const buttonSubmitDeleteCardForm = formDeleteCard.querySelector('.popup__submit-button');
+
 // Поля ввода попапа редактирования аватара
 const linkPopupAvatar = formEditAvatar.elements.avatarLink;
 
@@ -70,14 +80,26 @@ const validationConfig = {
   errorClass: 'popup__input-error_active'
 };
 
-export { page, content,
-        popupAvatar, popupProfile, popupPlace, popupImg, popupAcceptDelete,
-        formEditAvatar, formEditProfile, formAddCard, formDeleteCard,
-        linkPopupAvatar,
-        namePopupProfile, activityPopupProfile, nameProfile, activityProfile,
-        titlePopupPlace, linkPopupPlace,
-        imagePopupImg, captionPopupImg,
-        cardTemplate, galleryList,
-        buttonOpenAvatarPopup, buttonOpenEditProfilePopup, buttonOpenAddCardPopup,
-        buttonCloseEditAvatarPopup, buttonCloseEditProfilePopup, buttonCloseAddCardPopup, buttonCloseAcceptDeletePopup, buttonCloseImgPopup,
-        validationConfig }
+// Конфиг для создания fetch запросов
+const fetchConfig = {
+  baseUrl: 'https://nomoreparties.co/v1/plus-cohort-22',
+  headers: {
+    authorization: 'cb17d783-a9d0-4eeb-a054-218c1a23615d',
+    'Content-Type': 'application/json'
+  }
+};
+
+export {
+  page, content,
+  popupAvatar, popupProfile, popupPlace, popupImg, popupAcceptDelete,
+  formEditAvatar, formEditProfile, formAddCard, formDeleteCard,
+  buttonSubmitAvatarForm, buttonSubmitProfileForm, buttonSubmitCardForm, buttonSubmitDeleteCardForm,
+  linkPopupAvatar,
+  namePopupProfile, activityPopupProfile, nameProfile, activityProfile,
+  titlePopupPlace, linkPopupPlace,
+  imagePopupImg, captionPopupImg,
+  cardTemplate, galleryList,
+  buttonOpenAvatarPopup, buttonOpenEditProfilePopup, buttonOpenAddCardPopup,
+  buttonCloseEditAvatarPopup, buttonCloseEditProfilePopup, buttonCloseAddCardPopup, buttonCloseAcceptDeletePopup, buttonCloseImgPopup,
+  validationConfig, fetchConfig,
+};

@@ -1,11 +1,21 @@
-import { popupImg,
-        formDeleteCard,
-        imagePopupImg, captionPopupImg,
-        cardTemplate, galleryList, popupAcceptDelete,
-        nameProfile } from './constants.js';
-import { openPopup, closePopup } from './modal.js';
-import { renderDeleteLoading } from './utils.js';
-import { createLikeFetch, createCardDeleteFetch } from './api.js';
+import {
+  popupImg,
+  formDeleteCard,
+  imagePopupImg, captionPopupImg,
+  cardTemplate, popupAcceptDelete,
+  nameProfile,
+  buttonSubmitDeleteCardForm,
+} from './constants.js';
+import {
+  openPopup, closePopup,
+} from './modal.js';
+import {
+  renderLoading,
+} from './utils.js';
+import {
+  createLikeFetch,
+  createCardDeleteFetch,
+} from './api.js';
 
 // Создание карточки
 function createCard(card) {
@@ -38,12 +48,16 @@ function createCard(card) {
     likesOwners = newCard.likes.map(owner => owner._id);
   }
 
-  setLikesOwners(card);
+  function renderLikeCounter(newCard) {
+    setLikesOwners(newCard);
+    likeCounterCardElement.textContent = likesOwners.length;
+  }
+
+  renderLikeCounter(card);  
 
   if(likesOwners.includes(nameProfile.userId)) {
     likeCardElement.classList.add('gallery__like_active');
   }
-  likeCounterCardElement.textContent = likesOwners.length;
   
   // Добавление события переключения состояния лайка по клику
   likeCardElement.addEventListener('click', () => {
@@ -52,9 +66,9 @@ function createCard(card) {
       createLikeFetch(`/cards/likes/${card._id}`, 'PUT')
         .then(newCard => {
           // Обновляем список людей лайкнувших карточку
-          setLikesOwners(newCard);
-          likeCounterCardElement.textContent = likesOwners.length;
-        });
+          renderLikeCounter(newCard);
+        })
+        .catch(err => console.log(err));
 
       likeCardElement.classList.add('gallery__like_active');
     } else {
@@ -62,9 +76,9 @@ function createCard(card) {
       createLikeFetch(`/cards/likes/${card._id}`, 'DELETE')
         .then(newCard => {
           // Обновляем список людей лайкнувших карточку
-          setLikesOwners(newCard);
-          likeCounterCardElement.textContent = likesOwners.length;
-        });
+          renderLikeCounter(newCard);
+        })
+        .catch(err => console.log(err));
       
       likeCardElement.classList.remove('gallery__like_active');
     }
@@ -89,13 +103,13 @@ function createCard(card) {
     formDeleteCard.addEventListener('submit', evt => {
       evt.preventDefault();
 
-      renderDeleteLoading(true);
+      renderLoading(buttonSubmitDeleteCardForm, 'Удаление...');
 
       // Проверка ту ли карточку удаляем
       if(formDeleteCard.cardId === card._id) {
         createCardDeleteFetch(`/cards/${formDeleteCard.cardId}`)
           .catch(err => console.log(err))
-          .finally(() => renderDeleteLoading(false));
+          .finally(() => renderLoading(buttonSubmitDeleteCardForm, 'Да'));
         cardElement.remove();
       }
 
@@ -106,14 +120,6 @@ function createCard(card) {
   return cardElement;
 }
 
-// Добавление карточки в список с её созданием при добавлении пользователем
-function addCard(card) {
-  galleryList.prepend(createCard(card));
-}
-
-// Добавление карточки в список с её созданием при загрузке страницы
-function addInitialCard(card) {
-  galleryList.append(createCard(card));
-}
-
-export { addCard, addInitialCard };
+export {
+  createCard,
+};

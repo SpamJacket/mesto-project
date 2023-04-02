@@ -1,7 +1,13 @@
-import { createGetFetch } from "./api.js";
-import { nameProfile, activityProfile,
-        buttonOpenAvatarPopup } from "./constants.js";
-import { addInitialCard } from "./cards.js";
+import {
+  createGetFetch,
+} from "./api.js";
+import {
+  nameProfile, activityProfile,
+  buttonOpenAvatarPopup,
+} from "./constants.js";
+import {
+  addInitialCard,
+} from "./script.js";
 
 // Получим данные профиля с сервера
 function getUserProfileData(url) {
@@ -30,4 +36,7 @@ function setCard(cards) {
   cards.forEach(card => addInitialCard(card));
 }
 
-export { getUserProfileData, getInitialCards }
+export {
+  getUserProfileData,
+  getInitialCards,
+};

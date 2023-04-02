@@ -1,11 +1,6 @@
-// Конфиг для создания fetch запросов
-const config = {
-  baseUrl: 'https://nomoreparties.co/v1/plus-cohort-22',
-  headers: {
-    authorization: 'cb17d783-a9d0-4eeb-a054-218c1a23615d',
-    'Content-Type': 'application/json'
-  }
-}
+import {
+  fetchConfig as config,
+} from "./constants";
 
 // Функция создания get fetch запроса
 async function createGetFetch(url) {
@@ -31,7 +26,14 @@ async function createProfileInfoPatchFetch(url, name, about) {
       name: name,
       about: about
     })
-  });
+  })
+    .then(res => {
+      if(res.ok) {
+        return res.json();
+      }
+
+      return Promise.reject(`Ошибка: ${res.status} ${res.statusText}`);
+    });
 }
 
 // Функция создания patch fetch запроса для аватара
@@ -42,7 +44,14 @@ async function createAvatarPatchFetch(url, avatarUrl) {
     body: JSON.stringify({
       avatar: avatarUrl
     })
-  });
+  })
+    .then(res => {
+      if(res.ok) {
+        return res.json();
+      }
+
+      return Promise.reject(`Ошибка: ${res.status} ${res.statusText}`);
+    });
 }
 
 // Функция создания post fetch запроса для карточки
@@ -70,6 +79,13 @@ async function createCardDeleteFetch(url) {
     method: 'DELETE',
     headers: config.headers
   })
+    .then(res => {
+      if(res.ok) {
+        return res.json();
+      }
+
+      return Promise.reject(`Ошибка: ${res.status} ${res.statusText}`);
+    });
 }
 
 // Функция создания запроса для добавления или удаления лайка
@@ -87,4 +103,10 @@ async function createLikeFetch(url, met) {
     });
 }
 
-export { createGetFetch, createProfileInfoPatchFetch, createAvatarPatchFetch, createCardPostFetch, createLikeFetch, createCardDeleteFetch };
+export { 
+  createGetFetch,
+  createProfileInfoPatchFetch,
+  createAvatarPatchFetch,
+  createCardPostFetch, createCardDeleteFetch,
+  createLikeFetch,
+};

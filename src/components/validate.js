@@ -93,4 +93,6 @@ function resetEnableValidation(formElement, validationConfig) {
   });
 }
 
-export { enableValidation, resetEnableValidation }
+export {
+  enableValidation, resetEnableValidation
+};
