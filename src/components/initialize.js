@@ -1,7 +1,7 @@
 import { createGetFetch } from "./api.js";
 import { nameProfile, activityProfile,
         buttonOpenAvatarPopup } from "./constants.js";
-import { addCard } from "./cards.js";
+import { addInitialCard } from "./cards.js";
 
 // Получим данные профиля с сервера
 function getUserProfileData(url) {
@@ -13,6 +13,7 @@ function getUserProfileData(url) {
 // Установим данные профиля с сервера на сайте
 function setProfileInfo(data) {
   nameProfile.textContent = data.name;
+  nameProfile.userId = data._id;
   activityProfile.textContent = data.about;
   buttonOpenAvatarPopup.style = `background-image: url('${data.avatar}');`
 }
@@ -26,9 +27,7 @@ function getInitialCards(url) {
 
 // Добавим все карточки на сайт
 function setCard(cards) {
-  cards.forEach(card => {
-    addCard(card.name, card.link);
-  });
+  cards.forEach(card => addInitialCard(card));
 }
 
 export { getUserProfileData, getInitialCards }

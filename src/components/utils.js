@@ -4,7 +4,7 @@ import { popupAvatar, popupProfile, popupPlace,
         titlePopupPlace, linkPopupPlace,
         buttonOpenAvatarPopup} from './constants.js';
 import { closePopup } from './modal.js';
-import { addCard } from './cards.js';
+import { addCard } from './cards.js'
 import { createProfileInfoPatchFetch, createAvatarPatchFetch, createCardPostFetch } from './api.js';
 
 // Подтягивание значений из профиля в попап редактирования профиля
@@ -42,9 +42,9 @@ function submitAddCardForm(evt) {
   evt.preventDefault();
   
   // Отправка на сервер данных новой карточки
-  createCardPostFetch('/cards', titlePopupPlace.value, linkPopupPlace.value);
-
-  addCard(titlePopupPlace.value, linkPopupPlace.value);
+  createCardPostFetch('/cards', titlePopupPlace.value, linkPopupPlace.value)
+    .then(addCard)
+    .catch(err => console.log(err));
 
   closePopup(popupPlace);
 }

@@ -1,34 +1,65 @@
 import { popupImg,
         formDeleteCard,
         imagePopupImg, captionPopupImg,
-        cardTemplate, galleryList, popupAcceptDelete } from './constants.js';
+        cardTemplate, galleryList, popupAcceptDelete,
+        nameProfile } from './constants.js';
 import { openPopup, closePopup } from './modal.js';
+import { createLikeFetch } from './api.js';
 
 // Создание карточки
-function createCard(name, link) {
+function createCard(card) {
   // Переменные для создаваемой карточки и её изобаржения
   const cardElement = cardTemplate.querySelector('.gallery__item').cloneNode(true);
   const imageCardElement = cardElement.querySelector('.gallery__image');
 
-  imageCardElement.src = link;
-  cardElement.querySelector('.gallery__title').textContent = name;
-  imageCardElement.alt = name;
+  imageCardElement.src = card.link;
+  cardElement.querySelector('.gallery__title').textContent = card.name;
+  imageCardElement.alt = card.name;
 
   // Добавление события открытия попапа полного изображения по клику
   imageCardElement.addEventListener('click', () => {
     openPopup(popupImg);
 
-    imagePopupImg.src = link;
-    captionPopupImg.textContent = name;
-    imagePopupImg.alt = name;
+    imagePopupImg.src = card.link;
+    captionPopupImg.textContent = card.name;
+    imagePopupImg.alt = card.name;
   });
 
   // Переменная лайка
   const likeCardElement = cardElement.querySelector('.gallery__like');
+  const likeCounterCardElement = cardElement.querySelector('.gallery__like-counter');
+  let likesOwners;
 
+  function setLikesOwners(newCard) {
+    likesOwners = newCard.likes.map(owner => owner._id);
+  }
+
+  setLikesOwners(card);
+
+  if(likesOwners.includes(nameProfile.userId)) {
+    likeCardElement.classList.add('gallery__like_active');
+  }
+  likeCounterCardElement.textContent = likesOwners.length;
+  
   // Добавление события переключения состояния лайка по клику
   likeCardElement.addEventListener('click', () => {
-    likeCardElement.classList.toggle('gallery__like_active');
+    if(!likesOwners.includes(nameProfile.userId)) {
+      createLikeFetch(`/cards/likes/${card._id}`, 'PUT')
+        .then(newCard => {
+          setLikesOwners(newCard);
+          likeCounterCardElement.textContent = likesOwners.length;
+        });
+
+      likeCardElement.classList.add('gallery__like_active');
+    } else {
+      createLikeFetch(`/cards/likes/${card._id}`, 'DELETE')
+        .then(newCard => {
+          setLikesOwners(newCard);
+          likeCounterCardElement.textContent = likesOwners.length;
+        });
+      
+      likeCardElement.classList.remove('gallery__like_active');
+    }
   });
 
   cardElement.querySelector('.gallery__delete-button').addEventListener('click', () => {
@@ -47,8 +78,12 @@ function createCard(name, link) {
 }
 
 // Добавление карточки в список с её созданием
-function addCard(name, link) {
-  galleryList.prepend(createCard(name, link));
+function addCard(card) {
+  galleryList.prepend(createCard(card));
 }
 
-export { addCard };
+function addInitialCard(card) {
+  galleryList.append(createCard(card));
+}
+
+export { addCard, addInitialCard };

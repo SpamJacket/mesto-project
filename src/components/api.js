@@ -54,7 +54,28 @@ async function createCardPostFetch(url, name, link) {
       name: name,
       link: link
     })
-  });
+  })
+    .then(res => {
+      if(res.ok) {
+        return res.json();
+      }
+
+      return Promise.reject(`Ошибка: ${res.status} ${res.statusText}`);
+    });
 }
 
-export { createGetFetch, createProfileInfoPatchFetch, createAvatarPatchFetch, createCardPostFetch };
+async function createLikeFetch(url, met) {
+  return fetch(config.baseUrl + url, {
+    method: met,
+    headers: config.headers
+  })
+    .then(res => {
+      if(res.ok) {
+        return res.json();
+      }
+
+      return Promise.reject(`Ошибка: ${res.status} ${res.statusText}`);
+    });
+}
+
+export { createGetFetch, createProfileInfoPatchFetch, createAvatarPatchFetch, createCardPostFetch, createLikeFetch };
