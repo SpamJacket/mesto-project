@@ -1,4 +1,4 @@
-import { popupAvatar, popupProfile, popupPlace,
+import { popupAvatar, popupProfile, popupPlace, popupAcceptDelete,
         linkPopupAvatar,
         namePopupProfile, activityPopupProfile, nameProfile, activityProfile,
         titlePopupPlace, linkPopupPlace,
@@ -17,8 +17,11 @@ function fillInEditProfileFormInputs() {
 function submitEditAvatarForm(evt) {
   evt.preventDefault();
 
+  renderAvatarLoading(true);
+
   createAvatarPatchFetch('/users/me/avatar', linkPopupAvatar.value)
-    .catch(err => console.log(err));
+    .catch(err => console.log(err))
+    .finally(() => renderAvatarLoading(false));
 
   buttonOpenAvatarPopup.style = `background-image: url("${linkPopupAvatar.value}")`;
 
@@ -29,9 +32,12 @@ function submitEditAvatarForm(evt) {
 function submitEditProfileForm(evt) {
   evt.preventDefault();
 
+  renderProfileLoading(true);
+
   // Отправка на сервер новых данных о инофрмации в профиле
   createProfileInfoPatchFetch('/users/me', namePopupProfile.value, activityPopupProfile.value)
-    .catch(err => console.log(err));
+    .catch(err => console.log(err))
+    .finally(() => renderProfileLoading(false));
 
   nameProfile.textContent = namePopupProfile.value;
   activityProfile.textContent = activityPopupProfile.value;
@@ -43,12 +49,51 @@ function submitEditProfileForm(evt) {
 function submitAddCardForm(evt) {
   evt.preventDefault();
   
+  renderPlaceLoading(true);
+
   // Отправка на сервер данных новой карточки
   createCardPostFetch('/cards', titlePopupPlace.value, linkPopupPlace.value)
     .then(addCard)
-    .catch(err => console.log(err));
+    .catch(err => console.log(err))
+    .finally(() => renderPlaceLoading(false));
 
   closePopup(popupPlace);
 }
 
-export { fillInEditProfileFormInputs, submitEditAvatarForm, submitEditProfileForm, submitAddCardForm };
+function renderProfileLoading(isLoading) {
+  const submitButton = popupProfile.querySelector('.popup__submit-button');
+  if(isLoading) {
+    submitButton.textContent = 'Сохранение...'; 
+  } else {
+    submitButton.textContent = 'Сохранить'; 
+  }
+}
+
+function renderAvatarLoading(isLoading) {
+  const submitButton = popupAvatar.querySelector('.popup__submit-button');
+  if(isLoading) {
+    submitButton.textContent = 'Сохранение...'; 
+  } else {
+    submitButton.textContent = 'Сохранить'; 
+  }
+}
+
+function renderPlaceLoading(isLoading) {
+  const submitButton = popupPlace.querySelector('.popup__submit-button');
+  if(isLoading) {
+    submitButton.textContent = 'Создание...'; 
+  } else {
+    submitButton.textContent = 'Создать'; 
+  }
+}
+
+function renderDeleteLoading(isLoading) {
+  const submitButton = popupAcceptDelete.querySelector('.popup__submit-button');
+  if(isLoading) {
+    submitButton.textContent = 'Удаление...'; 
+  } else {
+    submitButton.textContent = 'Да'; 
+  }
+}
+
+export { fillInEditProfileFormInputs, submitEditAvatarForm, submitEditProfileForm, submitAddCardForm, renderDeleteLoading };

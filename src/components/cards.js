@@ -4,6 +4,7 @@ import { popupImg,
         cardTemplate, galleryList, popupAcceptDelete,
         nameProfile } from './constants.js';
 import { openPopup, closePopup } from './modal.js';
+import { renderDeleteLoading } from './utils.js';
 import { createLikeFetch, createCardDeleteFetch } from './api.js';
 
 // Создание карточки
@@ -88,10 +89,13 @@ function createCard(card) {
     formDeleteCard.addEventListener('submit', evt => {
       evt.preventDefault();
 
+      renderDeleteLoading(true);
+
       // Проверка ту ли карточку удаляем
       if(formDeleteCard.cardId === card._id) {
         createCardDeleteFetch(`/cards/${formDeleteCard.cardId}`)
-          .catch(err => console.log(err));
+          .catch(err => console.log(err))
+          .finally(() => renderDeleteLoading(false));
         cardElement.remove();
       }
 
