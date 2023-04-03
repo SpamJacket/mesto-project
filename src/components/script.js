@@ -1,7 +1,7 @@
 import {
-  popupAvatar, popupProfile, popupPlace,
-  formEditAvatar, formEditProfile, formAddCard,
-  buttonSubmitAvatarForm, buttonSubmitProfileForm, buttonSubmitCardForm,
+  popupAvatar, popupProfile, popupPlace, popupAcceptDelete,
+  formEditAvatar, formEditProfile, formAddCard, formDeleteCard,
+  buttonSubmitAvatarForm, buttonSubmitProfileForm, buttonSubmitCardForm, buttonSubmitDeleteCardForm,
   namePopupProfile, activityPopupProfile, nameProfile, activityProfile,
   linkPopupAvatar,
   titlePopupPlace, linkPopupPlace,
@@ -23,22 +23,18 @@ import {
   enableValidation, resetEnableValidation,
 } from './validate.js';
 import {
-  getUserProfileData,
-  getInitialCards,
+  initializePageData,
 } from './initialize.js';
 import {
   createProfileInfoPatchFetch,
   createAvatarPatchFetch,
-  createCardPostFetch,
+  createCardPostFetch, createCardDeleteFetch,
 } from './api.js';
 
 // Основная функция запускающая все
 export default function main(){
-  // Получаем и устанавливаем имя и хобби профиля с сервера
-  getUserProfileData('/users/me');
-
-  // Получаем и добавляем карточки с сервера
-  getInitialCards('/cards');
+  // Получим с сервера и отобразим данные профиля и карточки
+  initializePageData('/users/me', '/cards');
 
   // Добавление события аватару открытия попапа по  клику
   buttonOpenAvatarPopup.addEventListener('click', () => {
@@ -76,6 +72,9 @@ export default function main(){
   // Добавление события кнопке создания карточки
   formAddCard.addEventListener('submit', submitAddCardForm);
 
+  // Добавление события удаления карточке при подтверждении
+  formDeleteCard.addEventListener('submit', submitDeleteCardForm);
+
   addClosingPopupByClickingOnOverlay();
 
   addClosingPopupByClickingOnCloseButton();
@@ -96,12 +95,13 @@ function submitEditAvatarForm(evt) {
   renderLoading(buttonSubmitAvatarForm, 'Сохранение...');
 
   createAvatarPatchFetch('/users/me/avatar', linkPopupAvatar.value)
+    .then(() => {
+      buttonOpenAvatarPopup.style = `background-image: url("${linkPopupAvatar.value}")`;
+
+      closePopup(popupAvatar);
+    })
     .catch(err => console.log(err))
     .finally(() => renderLoading(buttonSubmitAvatarForm, 'Сохранить'));
-
-  buttonOpenAvatarPopup.style = `background-image: url("${linkPopupAvatar.value}")`;
-
-  closePopup(popupAvatar);
 }
 
 // Сохранение новых значений полей профиля
@@ -112,16 +112,17 @@ function submitEditProfileForm(evt) {
 
   // Отправка на сервер новых данных о инофрмации в профиле
   createProfileInfoPatchFetch('/users/me', namePopupProfile.value, activityPopupProfile.value)
+    .then(() => {
+      nameProfile.textContent = namePopupProfile.value;
+      activityProfile.textContent = activityPopupProfile.value;
+
+      closePopup(popupProfile);
+    })
     .catch(err => console.log(err))
     .finally(() => renderLoading(buttonSubmitProfileForm, 'Сохранить'));
-
-  nameProfile.textContent = namePopupProfile.value;
-  activityProfile.textContent = activityPopupProfile.value;
-
-  closePopup(popupProfile);
 }
 
-// Добавления карточки из формы
+// Добавление карточки из формы
 function submitAddCardForm(evt) {
   evt.preventDefault();
   
@@ -129,11 +130,30 @@ function submitAddCardForm(evt) {
 
   // Отправка на сервер данных новой карточки
   createCardPostFetch('/cards', titlePopupPlace.value, linkPopupPlace.value)
-    .then(addCard)
+    .then(res => {
+      addCard(res);
+
+      closePopup(popupPlace);
+    })
     .catch(err => console.log(err))
     .finally(() => renderLoading(buttonSubmitCardForm, 'Создать'));
+}
 
-  closePopup(popupPlace);
+// Удаление карточки
+function submitDeleteCardForm(evt) {
+  evt.preventDefault();
+
+  renderLoading(buttonSubmitDeleteCardForm, 'Удаление...');
+
+  // Удаление с сервера карточки
+  createCardDeleteFetch(`/cards/${formDeleteCard.cardId}`)
+    .then(() => {
+      document.getElementById(formDeleteCard.cardId).remove();
+
+      closePopup(popupAcceptDelete);
+    })
+    .catch(err => console.log(err))
+    .finally(() => renderLoading(buttonSubmitDeleteCardForm, 'Да'));
 }
 
 // Добавление карточки в список с её созданием при добавлении пользователем

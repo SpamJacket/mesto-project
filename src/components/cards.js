@@ -1,20 +1,15 @@
 import {
   popupImg,
-  formDeleteCard,
   imagePopupImg, captionPopupImg,
   cardTemplate, popupAcceptDelete,
   nameProfile,
-  buttonSubmitDeleteCardForm,
+  formDeleteCard,
 } from './constants.js';
 import {
-  openPopup, closePopup,
+  openPopup,
 } from './modal.js';
 import {
-  renderLoading,
-} from './utils.js';
-import {
   createLikeFetch,
-  createCardDeleteFetch,
 } from './api.js';
 
 // Создание карточки
@@ -22,6 +17,8 @@ function createCard(card) {
   // Переменные для создаваемой карточки и её изобаржения
   const cardElement = cardTemplate.querySelector('.gallery__item').cloneNode(true);
   const imageCardElement = cardElement.querySelector('.gallery__image');
+
+  cardElement.id = card._id;
 
   imageCardElement.src = card.link;
   cardElement.querySelector('.gallery__title').textContent = card.name;
@@ -67,20 +64,20 @@ function createCard(card) {
         .then(newCard => {
           // Обновляем список людей лайкнувших карточку
           renderLikeCounter(newCard);
+
+          likeCardElement.classList.add('gallery__like_active');
         })
         .catch(err => console.log(err));
-
-      likeCardElement.classList.add('gallery__like_active');
     } else {
       // Удаление с сервер нашего лайка
       createLikeFetch(`/cards/likes/${card._id}`, 'DELETE')
         .then(newCard => {
           // Обновляем список людей лайкнувших карточку
           renderLikeCounter(newCard);
+
+          likeCardElement.classList.remove('gallery__like_active');
         })
         .catch(err => console.log(err));
-      
-      likeCardElement.classList.remove('gallery__like_active');
     }
   });
 
@@ -96,26 +93,8 @@ function createCard(card) {
   deleteCardElement.addEventListener('click', () => {
     openPopup(popupAcceptDelete);
 
-    // Присваеваем форме id карточки
     formDeleteCard.cardId = card._id;
-
-    // Добавление события удаления карточке при подтверждении
-    formDeleteCard.addEventListener('submit', evt => {
-      evt.preventDefault();
-
-      renderLoading(buttonSubmitDeleteCardForm, 'Удаление...');
-
-      // Проверка ту ли карточку удаляем
-      if(formDeleteCard.cardId === card._id) {
-        createCardDeleteFetch(`/cards/${formDeleteCard.cardId}`)
-          .catch(err => console.log(err))
-          .finally(() => renderLoading(buttonSubmitDeleteCardForm, 'Да'));
-        cardElement.remove();
-      }
-
-      closePopup(popupAcceptDelete);
-    });
-  })
+  });
 
   return cardElement;
 }

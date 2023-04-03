@@ -9,13 +9,6 @@ import {
   addInitialCard,
 } from "./script.js";
 
-// Получим данные профиля с сервера
-function getUserProfileData(url) {
-  createGetFetch(url)
-    .then(setProfileInfo)
-    .catch(err => console.log(err));
-}
-
 // Установим данные профиля с сервера на сайте
 function setProfileInfo(data) {
   nameProfile.textContent = data.name;
@@ -24,19 +17,26 @@ function setProfileInfo(data) {
   buttonOpenAvatarPopup.style = `background-image: url('${data.avatar}');`
 }
 
-// Получим массив карточек с сервера
-function getInitialCards(url) {
-  createGetFetch(url)
-    .then(setCard)
-    .catch(err => console.log(err));
-}
-
 // Добавим все карточки на сайт
 function setCard(cards) {
   cards.forEach(card => addInitialCard(card));
 }
 
+function initializePageData(urlProfileData, urlCards) {
+  Promise.all([
+    // Получим данные профиля с сервера
+    createGetFetch(urlProfileData),
+    // Получим массив карточек с сервера
+    createGetFetch(urlCards)
+  ])
+    .then(values => {
+      // Если все данные с сервера пришли, отобразим их
+      setProfileInfo(values[0]);
+      setCard(values[1]);
+    })
+    .catch(err => console.log(err));
+}
+
 export {
-  getUserProfileData,
-  getInitialCards,
+  initializePageData,
 };

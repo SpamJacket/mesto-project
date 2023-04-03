@@ -2,19 +2,21 @@ import {
   fetchConfig as config,
 } from "./constants";
 
+function getResponseData(res) {
+  if (res.ok) {
+    return res.json();
+  }
+
+  return Promise.reject(`Ошибка: ${res.status} ${res.statusText}`);
+}
+
 // Функция создания get fetch запроса
 async function createGetFetch(url) {
   return fetch(config.baseUrl + url, {
     method: 'GET',
     headers: config.headers
   })
-    .then(res => {
-      if(res.ok) {
-        return res.json();
-      }
-
-      return Promise.reject(`Ошибка: ${res.status} ${res.statusText}`);
-    });
+    .then(getResponseData);
 }
 
 // Функция создания patch fetch запроса для информации в профиле
@@ -27,13 +29,7 @@ async function createProfileInfoPatchFetch(url, name, about) {
       about: about
     })
   })
-    .then(res => {
-      if(res.ok) {
-        return res.json();
-      }
-
-      return Promise.reject(`Ошибка: ${res.status} ${res.statusText}`);
-    });
+    .then(getResponseData);
 }
 
 // Функция создания patch fetch запроса для аватара
@@ -45,13 +41,7 @@ async function createAvatarPatchFetch(url, avatarUrl) {
       avatar: avatarUrl
     })
   })
-    .then(res => {
-      if(res.ok) {
-        return res.json();
-      }
-
-      return Promise.reject(`Ошибка: ${res.status} ${res.statusText}`);
-    });
+    .then(getResponseData);
 }
 
 // Функция создания post fetch запроса для карточки
@@ -64,13 +54,7 @@ async function createCardPostFetch(url, name, link) {
       link: link
     })
   })
-    .then(res => {
-      if(res.ok) {
-        return res.json();
-      }
-
-      return Promise.reject(`Ошибка: ${res.status} ${res.statusText}`);
-    });
+    .then(getResponseData);
 }
 
 // Функция создания delete fetch запроса для карточки
@@ -79,13 +63,7 @@ async function createCardDeleteFetch(url) {
     method: 'DELETE',
     headers: config.headers
   })
-    .then(res => {
-      if(res.ok) {
-        return res.json();
-      }
-
-      return Promise.reject(`Ошибка: ${res.status} ${res.statusText}`);
-    });
+    .then(getResponseData);
 }
 
 // Функция создания запроса для добавления или удаления лайка
@@ -94,13 +72,7 @@ async function createLikeFetch(url, met) {
     method: met,
     headers: config.headers
   })
-    .then(res => {
-      if(res.ok) {
-        return res.json();
-      }
-
-      return Promise.reject(`Ошибка: ${res.status} ${res.statusText}`);
-    });
+    .then(getResponseData);
 }
 
 export { 
