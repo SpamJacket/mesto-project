@@ -1,9 +1,7 @@
 import {
-  createGetFetch,
-} from "./api.js";
-import {
   nameProfile, activityProfile,
   buttonOpenAvatarPopup,
+  api,
 } from "./constants.js";
 import {
   addInitialCard,
@@ -12,7 +10,7 @@ import {
 // Установим данные профиля с сервера на сайте
 function setProfileInfo(data) {
   nameProfile.textContent = data.name;
-  nameProfile.userId = data._id;
+  nameProfile._userId = data._id;
   activityProfile.textContent = data.about;
   buttonOpenAvatarPopup.style = `background-image: url('${data.avatar}');`
 }
@@ -25,9 +23,9 @@ function setCard(cards) {
 function initializePageData(urlProfileData, urlCards) {
   Promise.all([
     // Получим данные профиля с сервера
-    createGetFetch(urlProfileData),
+    api.createGetFetch(urlProfileData),
     // Получим массив карточек с сервера
-    createGetFetch(urlCards)
+    api.createGetFetch(urlCards)
   ])
     .then(values => {
       // Если все данные с сервера пришли, отобразим их

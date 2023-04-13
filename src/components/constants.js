@@ -1,3 +1,5 @@
+import Api from './api.js';
+
 // Переменные для блоков page и content
 const page = document.querySelector('.page');
 const content = page.querySelector('.content');
@@ -89,6 +91,15 @@ const fetchConfig = {
   }
 };
 
+const endpoints = {
+  profile: '/users/me',
+  cards: '/cards',
+  avatar: '/users/me/avatar',
+  likes: '/cards/likes'
+}
+
+const api = new Api(fetchConfig);
+
 export {
   page, content,
   popupAvatar, popupProfile, popupPlace, popupImg, popupAcceptDelete,
@@ -101,5 +112,6 @@ export {
   cardTemplate, galleryList,
   buttonOpenAvatarPopup, buttonOpenEditProfilePopup, buttonOpenAddCardPopup,
   buttonCloseEditAvatarPopup, buttonCloseEditProfilePopup, buttonCloseAddCardPopup, buttonCloseAcceptDeletePopup, buttonCloseImgPopup,
-  validationConfig, fetchConfig,
+  validationConfig, endpoints, 
+  api,
 };

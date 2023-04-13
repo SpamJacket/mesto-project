@@ -7,7 +7,9 @@ import {
   titlePopupPlace, linkPopupPlace,
   buttonOpenAvatarPopup, buttonOpenEditProfilePopup, buttonOpenAddCardPopup,
   galleryList,
-  validationConfig as config,
+  validationConfig,
+  endpoints,
+  api,
 } from './constants.js';
 import {
   openPopup, closePopup,
@@ -25,22 +27,19 @@ import {
 import {
   initializePageData,
 } from './initialize.js';
-import {
-  createProfileInfoPatchFetch,
-  createAvatarPatchFetch,
-  createCardPostFetch, createCardDeleteFetch,
-} from './api.js';
+
+const { profile: profileUrl, cards: cardsUrl, avatar: avatarUrl } = endpoints;
 
 // Основная функция запускающая все
 export default function main(){
   // Получим с сервера и отобразим данные профиля и карточки
-  initializePageData('/users/me', '/cards');
+  initializePageData(profileUrl, cardsUrl);
 
   // Добавление события аватару открытия попапа по  клику
   buttonOpenAvatarPopup.addEventListener('click', () => {
     formEditAvatar.reset();
 
-    resetEnableValidation(formEditAvatar, config);
+    resetEnableValidation(formEditAvatar, validationConfig);
     
     openPopup(popupAvatar);
   });
@@ -52,7 +51,7 @@ export default function main(){
   buttonOpenEditProfilePopup.addEventListener('click', () => {
     fillInEditProfileFormInputs();
 
-    resetEnableValidation(formEditProfile, config);
+    resetEnableValidation(formEditProfile, validationConfig);
 
     openPopup(popupProfile);
   });
@@ -64,7 +63,7 @@ export default function main(){
   buttonOpenAddCardPopup.addEventListener('click', () => {
     formAddCard.reset();
     
-    resetEnableValidation(formAddCard, config);
+    resetEnableValidation(formAddCard, validationConfig);
 
     openPopup(popupPlace);
   });
@@ -79,7 +78,7 @@ export default function main(){
 
   addClosingPopupByClickingOnCloseButton();
 
-  enableValidation(config);
+  enableValidation(validationConfig);
 }
 
 // Подтягивание значений из профиля в попап редактирования профиля
@@ -94,7 +93,7 @@ function submitEditAvatarForm(evt) {
 
   renderLoading(buttonSubmitAvatarForm, 'Сохранение...');
 
-  createAvatarPatchFetch('/users/me/avatar', linkPopupAvatar.value)
+  api.createAvatarPatchFetch(avatarUrl, linkPopupAvatar.value)
     .then(() => {
       buttonOpenAvatarPopup.style = `background-image: url("${linkPopupAvatar.value}")`;
 
@@ -111,7 +110,7 @@ function submitEditProfileForm(evt) {
   renderLoading(buttonSubmitProfileForm, 'Сохранение...');
 
   // Отправка на сервер новых данных о инофрмации в профиле
-  createProfileInfoPatchFetch('/users/me', namePopupProfile.value, activityPopupProfile.value)
+  api.createProfileInfoPatchFetch(profileUrl, namePopupProfile.value, activityPopupProfile.value)
     .then(() => {
       nameProfile.textContent = namePopupProfile.value;
       activityProfile.textContent = activityPopupProfile.value;
@@ -129,7 +128,7 @@ function submitAddCardForm(evt) {
   renderLoading(buttonSubmitCardForm, 'Создание...');
 
   // Отправка на сервер данных новой карточки
-  createCardPostFetch('/cards', titlePopupPlace.value, linkPopupPlace.value)
+  api.createCardPostFetch(cardsUrl, titlePopupPlace.value, linkPopupPlace.value)
     .then(res => {
       addCard(res);
 
@@ -146,9 +145,9 @@ function submitDeleteCardForm(evt) {
   renderLoading(buttonSubmitDeleteCardForm, 'Удаление...');
 
   // Удаление с сервера карточки
-  createCardDeleteFetch(`/cards/${formDeleteCard.cardId}`)
+  api.createCardDeleteFetch(`${cardsUrl}/${formDeleteCard._cardId}`)
     .then(() => {
-      document.getElementById(formDeleteCard.cardId).remove();
+      document.getElementById(formDeleteCard._cardId).remove();
 
       closePopup(popupAcceptDelete);
     })

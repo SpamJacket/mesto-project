@@ -4,13 +4,14 @@ import {
   cardTemplate, popupAcceptDelete,
   nameProfile,
   formDeleteCard,
+  endpoints,
+  api,
 } from './constants.js';
 import {
   openPopup,
 } from './modal.js';
-import {
-  createLikeFetch,
-} from './api.js';
+
+const { likes: likesUrl } = endpoints;
 
 // Создание карточки
 function createCard(card) {
@@ -52,15 +53,15 @@ function createCard(card) {
 
   renderLikeCounter(card);  
 
-  if(likesOwners.includes(nameProfile.userId)) {
+  if(likesOwners.includes(nameProfile._userId)) {
     likeCardElement.classList.add('gallery__like_active');
   }
   
   // Добавление события переключения состояния лайка по клику
   likeCardElement.addEventListener('click', () => {
-    if(!likesOwners.includes(nameProfile.userId)) {
+    if(!likesOwners.includes(nameProfile._userId)) {
       // Отправка на сервер нашего лайка
-      createLikeFetch(`/cards/likes/${card._id}`, 'PUT')
+      api.createLikeFetch(`${likesUrl}/${card._id}`, 'PUT')
         .then(newCard => {
           // Обновляем список людей лайкнувших карточку
           renderLikeCounter(newCard);
@@ -70,7 +71,7 @@ function createCard(card) {
         .catch(err => console.log(err));
     } else {
       // Удаление с сервер нашего лайка
-      createLikeFetch(`/cards/likes/${card._id}`, 'DELETE')
+      api.createLikeFetch(`${likesUrl}/${card._id}`, 'DELETE')
         .then(newCard => {
           // Обновляем список людей лайкнувших карточку
           renderLikeCounter(newCard);
@@ -85,7 +86,7 @@ function createCard(card) {
   const deleteCardElement = cardElement.querySelector('.gallery__delete-button');
   
   // Удаление кнопки удаления на не наших карточках
-  if(card.owner._id !== nameProfile.userId) {
+  if(card.owner._id !== nameProfile._userId) {
     deleteCardElement.remove();
   }
 
@@ -93,7 +94,7 @@ function createCard(card) {
   deleteCardElement.addEventListener('click', () => {
     openPopup(popupAcceptDelete);
 
-    formDeleteCard.cardId = card._id;
+    formDeleteCard._cardId = card._id;
   });
 
   return cardElement;

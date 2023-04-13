@@ -1,84 +1,52 @@
-import {
-  fetchConfig as config,
-} from "./constants";
-
-function getResponseData(res) {
-  if (res.ok) {
-    return res.json();
+export default class Api {
+  constructor({ baseUrl, headers }) {
+    this._baseUrl = baseUrl;
+    this._headers = headers;
   }
 
-  return Promise.reject(`Ошибка: ${res.status} ${res.statusText}`);
-}
+  _getResponseData(res) {
+    if(res.ok) {
+      return res.json();
+    }
 
-// Функция создания get fetch запроса
-async function createGetFetch(url) {
-  return fetch(config.baseUrl + url, {
-    method: 'GET',
-    headers: config.headers
-  })
-    .then(getResponseData);
-}
+    return Promise.reject(`Ошибка: ${res.status} ${res.statusText}`);
+  }
 
-// Функция создания patch fetch запроса для информации в профиле
-async function createProfileInfoPatchFetch(url, name, about) {
-  return fetch(config.baseUrl + url, {
-    method: 'PATCH',
-    headers: config.headers,
-    body: JSON.stringify({
-      name: name,
-      about: about
-    })
-  })
-    .then(getResponseData);
-}
+  async _createFetch({ endpoint, data, method }) {
+    const options = {
+      headers: this._headers,
+      method,
+    };
 
-// Функция создания patch fetch запроса для аватара
-async function createAvatarPatchFetch(url, avatarUrl) {
-  return fetch(config.baseUrl + url, {
-    method: 'PATCH',
-    headers: config.headers,
-    body: JSON.stringify({
-      avatar: avatarUrl
-    })
-  })
-    .then(getResponseData);
-}
+    if(data) {
+      options.body = JSON.stringify(data);
+    }
 
-// Функция создания post fetch запроса для карточки
-async function createCardPostFetch(url, name, link) {
-  return fetch(config.baseUrl + url, {
-    method: 'POST',
-    headers: config.headers,
-    body: JSON.stringify({
-      name: name,
-      link: link
-    })
-  })
-    .then(getResponseData);
-}
+    const response = await fetch(this._baseUrl + endpoint, options);
+    return this._getResponseData(response);
+  }
 
-// Функция создания delete fetch запроса для карточки
-async function createCardDeleteFetch(url) {
-  return fetch(config.baseUrl + url, {
-    method: 'DELETE',
-    headers: config.headers
-  })
-    .then(getResponseData);
-}
+  createGetFetch(endpoint) {
+    return this._createFetch({ endpoint, method: 'GET' });
+  }
 
-// Функция создания запроса для добавления или удаления лайка
-async function createLikeFetch(url, met) {
-  return fetch(config.baseUrl + url, {
-    method: met,
-    headers: config.headers
-  })
-    .then(getResponseData);
-}
+  createProfileInfoPatchFetch(endpoint, name, about) {
+    return this._createFetch({ endpoint, data: { name, about }, method: 'PATCH' });
+  }
 
-export { 
-  createGetFetch,
-  createProfileInfoPatchFetch,
-  createAvatarPatchFetch,
-  createCardPostFetch, createCardDeleteFetch,
-  createLikeFetch,
-};
+  createAvatarPatchFetch(endpoint, avatar) {
+    return this._createFetch({ endpoint, data: { avatar }, method: 'PATCH' });
+  }
+
+  createCardPostFetch(endpoint, name, link) {
+    return this._createFetch({ endpoint, data: { name, link }, method: 'POST' });
+  }
+
+  createCardDeleteFetch(endpoint) {
+    return this._createFetch({ endpoint, method: 'DELETE' });
+  }
+
+  createLikeFetch(endpoint, method) {
+    return this._createFetch({ endpoint, method });
+  }
+}
