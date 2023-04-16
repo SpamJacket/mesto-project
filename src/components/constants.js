@@ -1,4 +1,5 @@
 import Api from './Api.js';
+import FormValidator from './FormValidator.js';
 
 // Переменные для блоков page и content
 const page = document.querySelector('.page');
@@ -75,7 +76,6 @@ const buttonCloseImgPopup = page.querySelector('.popup_type_img .popup__close-bu
 
 // Объект настроек для валидации
 const validationConfig = {
-  formSelector: '.popup__form',
   inputSelector: '.popup__input',
   submitButtonSelector: '.popup__submit-button',
   inactiveButtonClass: 'popup__submit-button_inactive',
@@ -101,6 +101,12 @@ const endpoints = {
 
 const api = new Api(fetchConfig);
 
+const formEditAvatarValidator = new FormValidator(validationConfig, formEditAvatar);
+const formEditProfileValidator = new FormValidator(validationConfig, formEditProfile);
+const formAddCardValidator = new FormValidator(validationConfig, formAddCard);
+
+const formValidators = [ formEditAvatarValidator, formEditProfileValidator, formAddCardValidator ];
+
 export {
   page, content,
   popupAvatar, popupProfile, popupPlace, popupImg, popupAcceptDelete,
@@ -115,4 +121,5 @@ export {
   buttonCloseEditAvatarPopup, buttonCloseEditProfilePopup, buttonCloseAddCardPopup, buttonCloseAcceptDeletePopup, buttonCloseImgPopup,
   validationConfig, endpoints, 
   api,
+  formValidators,
 };

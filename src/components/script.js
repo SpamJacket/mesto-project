@@ -7,9 +7,9 @@ import {
   titlePopupPlace, linkPopupPlace,
   buttonOpenAvatarPopup, buttonOpenEditProfilePopup, buttonOpenAddCardPopup,
   templateSelector, galleryList,
-  validationConfig,
   endpoints,
   api,
+  formValidators,
 } from './constants.js';
 import {
   openPopup, closePopup,
@@ -19,14 +19,12 @@ import {
   renderLoading,
 } from './utils.js';
 import {
-  enableValidation, resetEnableValidation,
-} from './validate.js';
-import {
   initializePageData,
 } from './initialize.js';
 import Card from './Card.js';
 
 const { profile: profileUrl, cards: cardsUrl, avatar: avatarUrl } = endpoints;
+const [ formEditAvatarValidator, formEditProfileValidator, formAddCardValidator ] = formValidators;
 
 // Основная функция запускающая все
 export default function main(){
@@ -37,7 +35,7 @@ export default function main(){
   buttonOpenAvatarPopup.addEventListener('click', () => {
     formEditAvatar.reset();
 
-    resetEnableValidation(formEditAvatar, validationConfig);
+    formEditAvatarValidator.resetEnableValidation();
     
     openPopup(popupAvatar);
   });
@@ -49,7 +47,7 @@ export default function main(){
   buttonOpenEditProfilePopup.addEventListener('click', () => {
     fillInEditProfileFormInputs();
 
-    resetEnableValidation(formEditProfile, validationConfig);
+    formEditProfileValidator.resetEnableValidation();
 
     openPopup(popupProfile);
   });
@@ -61,7 +59,7 @@ export default function main(){
   buttonOpenAddCardPopup.addEventListener('click', () => {
     formAddCard.reset();
     
-    resetEnableValidation(formAddCard, validationConfig);
+    formAddCardValidator.resetEnableValidation();
 
     openPopup(popupPlace);
   });
@@ -76,7 +74,7 @@ export default function main(){
 
   addClosingPopupByClickingOnCloseButton();
 
-  enableValidation(validationConfig);
+  setValidation();
 }
 
 // Подтягивание значений из профиля в попап редактирования профиля
@@ -163,6 +161,12 @@ function addCard(cardData) {
 function addInitialCard(cardData) {
   const card = new Card(cardData, templateSelector, api.createLikeFetch.bind(api));
   galleryList.append(card.createCard());
+}
+
+function setValidation() {
+  formValidators.forEach(form => {
+    form.enableValidation();
+  })
 }
 
 export {
