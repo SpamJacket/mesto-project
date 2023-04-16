@@ -1,4 +1,4 @@
-import Api from './api.js';
+import Api from './Api.js';
 
 // Переменные для блоков page и content
 const page = document.querySelector('.page');
@@ -49,7 +49,8 @@ const imagePopupImg = popupImg.querySelector('.popup__image');
 const captionPopupImg = popupImg.querySelector('.popup__caption');
 
 // Переменные для шаблона карточки и списка карточек
-const cardTemplate = document.querySelector('#gallery-item').content;
+// const cardTemplate = document.querySelector('#gallery-item').content;
+const templateSelector = '#gallery-item';
 const galleryList = content.querySelector('.gallery__list');
 
 // Кнопки открытия попапов
@@ -109,7 +110,7 @@ export {
   namePopupProfile, activityPopupProfile, nameProfile, activityProfile,
   titlePopupPlace, linkPopupPlace,
   imagePopupImg, captionPopupImg,
-  cardTemplate, galleryList,
+  templateSelector, galleryList,
   buttonOpenAvatarPopup, buttonOpenEditProfilePopup, buttonOpenAddCardPopup,
   buttonCloseEditAvatarPopup, buttonCloseEditProfilePopup, buttonCloseAddCardPopup, buttonCloseAcceptDeletePopup, buttonCloseImgPopup,
   validationConfig, endpoints, 

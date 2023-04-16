@@ -6,7 +6,7 @@ import {
   linkPopupAvatar,
   titlePopupPlace, linkPopupPlace,
   buttonOpenAvatarPopup, buttonOpenEditProfilePopup, buttonOpenAddCardPopup,
-  galleryList,
+  templateSelector, galleryList,
   validationConfig,
   endpoints,
   api,
@@ -19,14 +19,12 @@ import {
   renderLoading,
 } from './utils.js';
 import {
-  createCard,
-} from './cards.js';
-import {
   enableValidation, resetEnableValidation,
 } from './validate.js';
 import {
   initializePageData,
 } from './initialize.js';
+import Card from './Card.js';
 
 const { profile: profileUrl, cards: cardsUrl, avatar: avatarUrl } = endpoints;
 
@@ -156,13 +154,15 @@ function submitDeleteCardForm(evt) {
 }
 
 // Добавление карточки в список с её созданием при добавлении пользователем
-function addCard(card) {
-  galleryList.prepend(createCard(card));
+function addCard(cardData) {
+  const card = new Card(cardData, templateSelector, api.createLikeFetch.bind(api));
+  galleryList.prepend(card.createCard());
 }
 
 // Добавление карточки в список с её созданием при загрузке страницы
-function addInitialCard(card) {
-  galleryList.append(createCard(card));
+function addInitialCard(cardData) {
+  const card = new Card(cardData, templateSelector, api.createLikeFetch.bind(api));
+  galleryList.append(card.createCard());
 }
 
 export {

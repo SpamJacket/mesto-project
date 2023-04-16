@@ -29,8 +29,10 @@ function initializePageData(urlProfileData, urlCards) {
   ])
     .then(values => {
       // Если все данные с сервера пришли, отобразим их
-      setProfileInfo(values[0]);
-      setCard(values[1]);
+      const [ profileInfo, card ] = values;
+
+      setProfileInfo(profileInfo);
+      setCard(card);
     })
     .catch(err => console.log(err));
 }
