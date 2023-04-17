@@ -4,7 +4,7 @@ import {
   api,
 } from "./constants.js";
 import {
-  addInitialCard,
+  addInitialCards,
 } from "./script.js";
 
 // Установим данные профиля с сервера на сайте
@@ -13,11 +13,6 @@ function setProfileInfo(data) {
   nameProfile._userId = data._id;
   activityProfile.textContent = data.about;
   buttonOpenAvatarPopup.style = `background-image: url('${data.avatar}');`
-}
-
-// Добавим все карточки на сайт
-function setCard(cards) {
-  cards.forEach(card => addInitialCard(card));
 }
 
 function initializePageData(urlProfileData, urlCards) {
@@ -29,10 +24,10 @@ function initializePageData(urlProfileData, urlCards) {
   ])
     .then(values => {
       // Если все данные с сервера пришли, отобразим их
-      const [ profileInfo, card ] = values;
+      const [ profileInfo, cards ] = values;
 
       setProfileInfo(profileInfo);
-      setCard(card);
+      addInitialCards(cards);
     })
     .catch(err => console.log(err));
 }

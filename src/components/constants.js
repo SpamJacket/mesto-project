@@ -50,8 +50,8 @@ const imagePopupImg = popupImg.querySelector('.popup__image');
 const captionPopupImg = popupImg.querySelector('.popup__caption');
 
 // Переменные для шаблона карточки и списка карточек
-// const cardTemplate = document.querySelector('#gallery-item').content;
 const templateSelector = '#gallery-item';
+const galleryListSelector = '.gallery__list';
 const galleryList = content.querySelector('.gallery__list');
 
 // Кнопки открытия попапов
@@ -116,7 +116,7 @@ export {
   namePopupProfile, activityPopupProfile, nameProfile, activityProfile,
   titlePopupPlace, linkPopupPlace,
   imagePopupImg, captionPopupImg,
-  templateSelector, galleryList,
+  templateSelector, galleryListSelector, galleryList,
   buttonOpenAvatarPopup, buttonOpenEditProfilePopup, buttonOpenAddCardPopup,
   buttonCloseEditAvatarPopup, buttonCloseEditProfilePopup, buttonCloseAddCardPopup, buttonCloseAcceptDeletePopup, buttonCloseImgPopup,
   validationConfig, endpoints, 

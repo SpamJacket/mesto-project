@@ -6,7 +6,7 @@ import {
   linkPopupAvatar,
   titlePopupPlace, linkPopupPlace,
   buttonOpenAvatarPopup, buttonOpenEditProfilePopup, buttonOpenAddCardPopup,
-  templateSelector, galleryList,
+  templateSelector, galleryListSelector, galleryList,
   endpoints,
   api,
   formValidators,
@@ -22,6 +22,7 @@ import {
   initializePageData,
 } from './initialize.js';
 import Card from './Card.js';
+import Section from './Section.js';
 
 const { profile: profileUrl, cards: cardsUrl, avatar: avatarUrl } = endpoints;
 const [ formEditAvatarValidator, formEditProfileValidator, formAddCardValidator ] = formValidators;
@@ -87,6 +88,7 @@ function fillInEditProfileFormInputs() {
 function submitEditAvatarForm(evt) {
   evt.preventDefault();
 
+  evt.target.querySelector('.popup__submit-button').disabled = true;
   renderLoading(buttonSubmitAvatarForm, 'Сохранение...');
 
   api.createAvatarPatchFetch(avatarUrl, linkPopupAvatar.value)
@@ -103,6 +105,7 @@ function submitEditAvatarForm(evt) {
 function submitEditProfileForm(evt) {
   evt.preventDefault();
 
+  evt.target.querySelector('.popup__submit-button').disabled = true;
   renderLoading(buttonSubmitProfileForm, 'Сохранение...');
 
   // Отправка на сервер новых данных о инофрмации в профиле
@@ -121,6 +124,7 @@ function submitEditProfileForm(evt) {
 function submitAddCardForm(evt) {
   evt.preventDefault();
   
+  evt.target.querySelector('.popup__submit-button').disabled = true;
   renderLoading(buttonSubmitCardForm, 'Создание...');
 
   // Отправка на сервер данных новой карточки
@@ -153,14 +157,20 @@ function submitDeleteCardForm(evt) {
 
 // Добавление карточки в список с её созданием при добавлении пользователем
 function addCard(cardData) {
-  const card = new Card(cardData, templateSelector, api.createLikeFetch.bind(api));
-  galleryList.prepend(card.createCard());
+  const section = new Section({ items: [cardData], renderer: (item) => {
+    const card = new Card(item, templateSelector, api.createLikeFetch.bind(api));
+    section.addItemReverse(card.createCard());
+  } }, galleryListSelector);
+  section.renderItems();
 }
 
 // Добавление карточки в список с её созданием при загрузке страницы
-function addInitialCard(cardData) {
-  const card = new Card(cardData, templateSelector, api.createLikeFetch.bind(api));
-  galleryList.append(card.createCard());
+export function addInitialCards(cards) {
+  const section = new Section({ items: cards, renderer: (item) => {
+    const card = new Card(item, templateSelector, api.createLikeFetch.bind(api));
+    section.addItem(card.createCard());
+  } }, galleryListSelector);
+  section.renderItems();
 }
 
 function setValidation() {
@@ -168,7 +178,3 @@ function setValidation() {
     form.enableValidation();
   })
 }
-
-export {
-  addCard, addInitialCard,
-};
