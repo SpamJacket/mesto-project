@@ -1,7 +1,3 @@
-function renderLoading(submitButton, loadingMessage) {
+export function renderLoading(submitButton, loadingMessage) {
   submitButton.textContent = loadingMessage;
 }
-
-export {
-  renderLoading,
-};

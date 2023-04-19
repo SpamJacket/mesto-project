@@ -1,14 +1,9 @@
 import {
-  captionPopupImg, imagePopupImg,
   popupImg,
   nameProfile,
   endpoints,
   popupAcceptDelete,
-  formDeleteCard,
 } from './constants.js'
-import {
-  openPopup
-} from './modal';
 
 const { likes: likesUrl } = endpoints;
 
@@ -52,18 +47,14 @@ export default class Card {
     }
   }
 
-  _setEventListener() {
+  _setEventListeners() {
     this._imageCardElement.addEventListener('click', this._handleImageClick);
     this._likeCardElement.addEventListener('click', this._handleLikeClick);
     this._deleteCardElement.addEventListener('click', this._handleDeleteClick);
   }
 
   _handleImageClick() {
-    openPopup(popupImg);
-
-    imagePopupImg.src = this._link;
-    imagePopupImg.alt = this._name;
-    captionPopupImg.textContent = this._name;
+    popupImg.openPopup(this._link, this._name);
   }
 
   _handleLikeClick() {
@@ -79,9 +70,9 @@ export default class Card {
   }
 
   _handleDeleteClick() {
-    openPopup(popupAcceptDelete);
+    popupAcceptDelete.openPopup();
 
-    formDeleteCard._cardId = this._id;
+    sessionStorage.setItem('delete-card-id', this._id);
   }
 
   _renderLike(card) {
@@ -93,7 +84,7 @@ export default class Card {
 
   createCard() {
     this._renderCardElement();
-    this._setEventListener();
+    this._setEventListeners();
 
     return this._cardElement;
   }

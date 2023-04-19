@@ -1,16 +1,27 @@
 import Api from './Api.js';
 import FormValidator from './FormValidator.js';
+import PopupWithForm from './PopupWithForm.js';
+import PopupWithImage from './PopupWithImage.js';
+
+import {
+  submitEditAvatarForm, submitEditProfileForm, submitAddCardForm, submitDeleteCardForm,
+} from './script.js';
 
 // Переменные для блоков page и content
 const page = document.querySelector('.page');
 const content = page.querySelector('.content');
 
 // Попапы
-const popupAvatar = page.querySelector('.popup_type_avatar');
-const popupProfile = page.querySelector('.popup_type_profile');
-const popupPlace = page.querySelector('.popup_type_place');
-const popupAcceptDelete = page.querySelector('.popup_type_accept-delete')
-const popupImg = page.querySelector('.popup_type_img');
+const popupAvatar = new PopupWithForm('.popup_type_avatar', submitEditAvatarForm);
+popupAvatar.setEventListeners();
+const popupProfile = new PopupWithForm('.popup_type_profile', submitEditProfileForm);
+popupProfile.setEventListeners();
+const popupPlace = new PopupWithForm('.popup_type_place', submitAddCardForm);
+popupPlace.setEventListeners();
+const popupAcceptDelete = new PopupWithForm('.popup_type_accept-delete', submitDeleteCardForm);
+popupAcceptDelete.setEventListeners();
+const popupImg = new PopupWithImage('.popup_type_img');
+popupImg.setEventListeners();
 
 // Формы
 // попапа редактирования аватара
@@ -22,32 +33,14 @@ const formAddCard = document.forms.placeForm;
 // попапа подтверждения удаления 
 const formDeleteCard = document.forms.acceptDeleteForm;
 
-// Кнопки субмита
-// редактирования аватара
-const buttonSubmitAvatarForm = formEditAvatar.querySelector('.popup__submit-button');
-// редактирования профиля
-const buttonSubmitProfileForm = formEditProfile.querySelector('.popup__submit-button');
-// добавления карточки
-const buttonSubmitCardForm = formAddCard.querySelector('.popup__submit-button');
-// подтверждения удаления
-const buttonSubmitDeleteCardForm = formDeleteCard.querySelector('.popup__submit-button');
-
 // Поля ввода попапа редактирования аватара
-const linkPopupAvatar = formEditAvatar.elements.avatarLink;
+const linkPopupAvatar = formEditAvatar.elements.avatar;
 
 // Поля ввода попапа редактирования профиля и элементы полей профиля
-const namePopupProfile = formEditProfile.elements.profileName;
-const activityPopupProfile = formEditProfile.elements.profileActivity;
+const namePopupProfile = formEditProfile.elements.name;
+const activityPopupProfile = formEditProfile.elements.about;
 const nameProfile = content.querySelector('.profile__name');
 const activityProfile = content.querySelector('.profile__activity');
-
-// Поля ввода попапа добавления карточек
-const titlePopupPlace = formAddCard.elements.placeTitle;
-const linkPopupPlace = formAddCard.elements.placeLink;
-
-// Изображение и подпись в попапе просмотра фото
-const imagePopupImg = popupImg.querySelector('.popup__image');
-const captionPopupImg = popupImg.querySelector('.popup__caption');
 
 // Переменные для шаблона карточки и списка карточек
 const templateSelector = '#gallery-item';
@@ -110,12 +103,8 @@ const formValidators = [ formEditAvatarValidator, formEditProfileValidator, form
 export {
   page, content,
   popupAvatar, popupProfile, popupPlace, popupImg, popupAcceptDelete,
-  formEditAvatar, formEditProfile, formAddCard, formDeleteCard,
-  buttonSubmitAvatarForm, buttonSubmitProfileForm, buttonSubmitCardForm, buttonSubmitDeleteCardForm,
   linkPopupAvatar,
   namePopupProfile, activityPopupProfile, nameProfile, activityProfile,
-  titlePopupPlace, linkPopupPlace,
-  imagePopupImg, captionPopupImg,
   templateSelector, galleryListSelector, galleryList,
   buttonOpenAvatarPopup, buttonOpenEditProfilePopup, buttonOpenAddCardPopup,
   buttonCloseEditAvatarPopup, buttonCloseEditProfilePopup, buttonCloseAddCardPopup, buttonCloseAcceptDeletePopup, buttonCloseImgPopup,

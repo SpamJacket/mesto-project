@@ -1,20 +1,12 @@
 import {
   popupAvatar, popupProfile, popupPlace, popupAcceptDelete,
-  formEditAvatar, formEditProfile, formAddCard, formDeleteCard,
-  buttonSubmitAvatarForm, buttonSubmitProfileForm, buttonSubmitCardForm, buttonSubmitDeleteCardForm,
   namePopupProfile, activityPopupProfile, nameProfile, activityProfile,
-  linkPopupAvatar,
-  titlePopupPlace, linkPopupPlace,
   buttonOpenAvatarPopup, buttonOpenEditProfilePopup, buttonOpenAddCardPopup,
-  templateSelector, galleryListSelector, galleryList,
+  templateSelector, galleryListSelector,
   endpoints,
   api,
   formValidators,
 } from './constants.js';
-import {
-  openPopup, closePopup,
-  addClosingPopupByClickingOnOverlay, addClosingPopupByClickingOnCloseButton,
-} from './modal.js';
 import {
   renderLoading,
 } from './utils.js';
@@ -34,46 +26,27 @@ export default function main(){
 
   // Добавление события аватару открытия попапа по  клику
   buttonOpenAvatarPopup.addEventListener('click', () => {
-    formEditAvatar.reset();
-
     formEditAvatarValidator.resetEnableValidation();
     
-    openPopup(popupAvatar);
+    popupAvatar.openPopup();
   });
-
-  // Добавление события кнопке сохранения попапа редактирования аватара
-  formEditAvatar.addEventListener('submit', submitEditAvatarForm);
 
   // Добавление события кнопке редактирования профиля для открытия попапа по клику
   buttonOpenEditProfilePopup.addEventListener('click', () => {
+    // popupProfile.setInputsValues();
     fillInEditProfileFormInputs();
 
     formEditProfileValidator.resetEnableValidation();
 
-    openPopup(popupProfile);
+    popupProfile.openPopup();
   });
-
-  // Добавление события кнопке сохранения попапа редактирования профиля
-  formEditProfile.addEventListener('submit', submitEditProfileForm);
 
   // Добавление события кнопке добавления карточек для открытия попапа по клику
   buttonOpenAddCardPopup.addEventListener('click', () => {
-    formAddCard.reset();
-    
     formAddCardValidator.resetEnableValidation();
 
-    openPopup(popupPlace);
+    popupPlace.openPopup();
   });
-
-  // Добавление события кнопке создания карточки
-  formAddCard.addEventListener('submit', submitAddCardForm);
-
-  // Добавление события удаления карточке при подтверждении
-  formDeleteCard.addEventListener('submit', submitDeleteCardForm);
-
-  addClosingPopupByClickingOnOverlay();
-
-  addClosingPopupByClickingOnCloseButton();
 
   setValidation();
 }
@@ -85,74 +58,75 @@ function fillInEditProfileFormInputs() {
 }
 
 // Сохранение аватара
-function submitEditAvatarForm(evt) {
+function submitEditAvatarForm(evt, data) {
   evt.preventDefault();
 
-  evt.target.querySelector('.popup__submit-button').disabled = true;
-  renderLoading(buttonSubmitAvatarForm, 'Сохранение...');
+  popupAvatar.submitButton.disabled = true;
+  renderLoading(popupAvatar.submitButton, 'Сохранение...');
 
-  api.createAvatarPatchFetch(avatarUrl, linkPopupAvatar.value)
+  api.createAvatarPatchFetch(avatarUrl, data.avatar)
     .then(() => {
-      buttonOpenAvatarPopup.style = `background-image: url("${linkPopupAvatar.value}")`;
+      buttonOpenAvatarPopup.style = `background-image: url("${data.avatar}")`;
 
-      closePopup(popupAvatar);
+      popupAvatar.closePopup();
     })
     .catch(err => console.log(err))
-    .finally(() => renderLoading(buttonSubmitAvatarForm, 'Сохранить'));
+    .finally(() => renderLoading(popupAvatar.submitButton, 'Сохранить'));
 }
 
 // Сохранение новых значений полей профиля
-function submitEditProfileForm(evt) {
+function submitEditProfileForm(evt, data) {
   evt.preventDefault();
 
-  evt.target.querySelector('.popup__submit-button').disabled = true;
-  renderLoading(buttonSubmitProfileForm, 'Сохранение...');
+  popupProfile.submitButton.disabled = true;
+  renderLoading(popupProfile.submitButton, 'Сохранение...');
 
   // Отправка на сервер новых данных о инофрмации в профиле
-  api.createProfileInfoPatchFetch(profileUrl, namePopupProfile.value, activityPopupProfile.value)
+  api.createProfileInfoPatchFetch(profileUrl, data.name, data.about)
     .then(() => {
-      nameProfile.textContent = namePopupProfile.value;
-      activityProfile.textContent = activityPopupProfile.value;
+      nameProfile.textContent = data.name;
+      activityProfile.textContent = data.about;
 
-      closePopup(popupProfile);
+      popupProfile.closePopup();
     })
     .catch(err => console.log(err))
-    .finally(() => renderLoading(buttonSubmitProfileForm, 'Сохранить'));
+    .finally(() => renderLoading(popupProfile.submitButton, 'Сохранить'));
 }
 
 // Добавление карточки из формы
-function submitAddCardForm(evt) {
+function submitAddCardForm(evt, data) {
   evt.preventDefault();
   
-  evt.target.querySelector('.popup__submit-button').disabled = true;
-  renderLoading(buttonSubmitCardForm, 'Создание...');
+  popupPlace.submitButton.disabled = true;
+  renderLoading(popupPlace.submitButton, 'Создание...');
 
   // Отправка на сервер данных новой карточки
-  api.createCardPostFetch(cardsUrl, titlePopupPlace.value, linkPopupPlace.value)
+  api.createCardPostFetch(cardsUrl, data.title, data.link)
     .then(res => {
       addCard(res);
 
-      closePopup(popupPlace);
+      popupPlace.closePopup();
     })
     .catch(err => console.log(err))
-    .finally(() => renderLoading(buttonSubmitCardForm, 'Создать'));
+    .finally(() => renderLoading(popupPlace.submitButton, 'Создать'));
 }
 
 // Удаление карточки
 function submitDeleteCardForm(evt) {
   evt.preventDefault();
 
-  renderLoading(buttonSubmitDeleteCardForm, 'Удаление...');
+  renderLoading(popupAcceptDelete.submitButton, 'Удаление...');
 
   // Удаление с сервера карточки
-  api.createCardDeleteFetch(`${cardsUrl}/${formDeleteCard._cardId}`)
+  api.createCardDeleteFetch(`${cardsUrl}/${sessionStorage.getItem('delete-card-id')}`)
     .then(() => {
-      document.getElementById(formDeleteCard._cardId).remove();
+      document.getElementById(sessionStorage.getItem('delete-card-id')).remove();
 
-      closePopup(popupAcceptDelete);
+      sessionStorage.removeItem('delete-card-id');
+      popupAcceptDelete.closePopup();
     })
     .catch(err => console.log(err))
-    .finally(() => renderLoading(buttonSubmitDeleteCardForm, 'Да'));
+    .finally(() => renderLoading(popupAcceptDelete.submitButton, 'Да'));
 }
 
 // Добавление карточки в список с её созданием при добавлении пользователем
@@ -178,3 +152,7 @@ function setValidation() {
     form.enableValidation();
   })
 }
+
+export {
+  submitEditAvatarForm, submitEditProfileForm, submitAddCardForm, submitDeleteCardForm,
+};

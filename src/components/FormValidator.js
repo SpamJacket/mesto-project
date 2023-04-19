@@ -28,7 +28,7 @@ export default class FormValidator {
 		this._errorElement = this._formElement.querySelector(`.${inputElement.id}-error`);
 		
 		inputElement.classList.add(this._inputErrorClass);
-	
+
 		this._errorElement.textContent = errorMessage;
 		this._errorElement.classList.add(this._errorClass);
 	}
@@ -56,7 +56,7 @@ export default class FormValidator {
 		}
 	}
 
-	_setEventListener() {
+	_setEventListeners() {
     this._inputs = Array.from(this._formElement.querySelectorAll(this._inputSelector));
 
 		this._toggleButtonState();
@@ -69,7 +69,7 @@ export default class FormValidator {
 	}
 
 	enableValidation() {
-		this._setEventListener();
+		this._setEventListeners();
 	}
 
 	resetEnableValidation() {
