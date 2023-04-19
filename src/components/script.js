@@ -1,11 +1,11 @@
 import {
   popupAvatar, popupProfile, popupPlace, popupAcceptDelete,
-  namePopupProfile, activityPopupProfile, nameProfile, activityProfile,
   buttonOpenAvatarPopup, buttonOpenEditProfilePopup, buttonOpenAddCardPopup,
   templateSelector, galleryListSelector,
   endpoints,
   api,
   formValidators,
+  userInfo,
 } from './constants.js';
 import {
   renderLoading,
@@ -33,8 +33,9 @@ export default function main(){
 
   // Добавление события кнопке редактирования профиля для открытия попапа по клику
   buttonOpenEditProfilePopup.addEventListener('click', () => {
-    // popupProfile.setInputsValues();
-    fillInEditProfileFormInputs();
+    userInfo.getUserInfo()
+      .then(popupProfile.setInputsValues)
+      .catch(err => console.log(err));
 
     formEditProfileValidator.resetEnableValidation();
 
@@ -49,12 +50,6 @@ export default function main(){
   });
 
   setValidation();
-}
-
-// Подтягивание значений из профиля в попап редактирования профиля
-function fillInEditProfileFormInputs() {
-  namePopupProfile.value = nameProfile.textContent;
-  activityPopupProfile.value = activityProfile.textContent;
 }
 
 // Сохранение аватара
@@ -84,8 +79,7 @@ function submitEditProfileForm(evt, data) {
   // Отправка на сервер новых данных о инофрмации в профиле
   api.createProfileInfoPatchFetch(profileUrl, data.name, data.about)
     .then(() => {
-      nameProfile.textContent = data.name;
-      activityProfile.textContent = data.about;
+      userInfo.setUserInfo(data);
 
       popupProfile.closePopup();
     })

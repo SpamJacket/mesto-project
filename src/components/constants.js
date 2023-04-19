@@ -2,6 +2,7 @@ import Api from './Api.js';
 import FormValidator from './FormValidator.js';
 import PopupWithForm from './PopupWithForm.js';
 import PopupWithImage from './PopupWithImage.js';
+import UserInfo from './UserInfo.js';
 
 import {
   submitEditAvatarForm, submitEditProfileForm, submitAddCardForm, submitDeleteCardForm,
@@ -30,17 +31,12 @@ const formEditAvatar = document.forms.avatarForm;
 const formEditProfile = document.forms.profileForm;
 // попапа добавления карточки
 const formAddCard = document.forms.placeForm;
-// попапа подтверждения удаления 
-const formDeleteCard = document.forms.acceptDeleteForm;
 
 // Поля ввода попапа редактирования аватара
 const linkPopupAvatar = formEditAvatar.elements.avatar;
 
 // Поля ввода попапа редактирования профиля и элементы полей профиля
-const namePopupProfile = formEditProfile.elements.name;
-const activityPopupProfile = formEditProfile.elements.about;
 const nameProfile = content.querySelector('.profile__name');
-const activityProfile = content.querySelector('.profile__activity');
 
 // Переменные для шаблона карточки и списка карточек
 const templateSelector = '#gallery-item';
@@ -100,15 +96,18 @@ const formAddCardValidator = new FormValidator(validationConfig, formAddCard);
 
 const formValidators = [ formEditAvatarValidator, formEditProfileValidator, formAddCardValidator ];
 
+const userInfo = new UserInfo({ nameSelector:'.profile__name', aboutSelector: '.profile__activity' });
+
 export {
   page, content,
   popupAvatar, popupProfile, popupPlace, popupImg, popupAcceptDelete,
   linkPopupAvatar,
-  namePopupProfile, activityPopupProfile, nameProfile, activityProfile,
+  nameProfile,
   templateSelector, galleryListSelector, galleryList,
   buttonOpenAvatarPopup, buttonOpenEditProfilePopup, buttonOpenAddCardPopup,
   buttonCloseEditAvatarPopup, buttonCloseEditProfilePopup, buttonCloseAddCardPopup, buttonCloseAcceptDeletePopup, buttonCloseImgPopup,
   validationConfig, endpoints, 
   api,
   formValidators,
+  userInfo,
 };

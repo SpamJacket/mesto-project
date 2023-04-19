@@ -1,7 +1,8 @@
 import {
-  nameProfile, activityProfile,
+  nameProfile,
   buttonOpenAvatarPopup,
   api,
+  userInfo,
 } from "./constants.js";
 import {
   addInitialCards,
@@ -9,9 +10,8 @@ import {
 
 // Установим данные профиля с сервера на сайте
 function setProfileInfo(data) {
-  nameProfile.textContent = data.name;
   nameProfile._userId = data._id;
-  activityProfile.textContent = data.about;
+  userInfo.setUserInfo(data);
   buttonOpenAvatarPopup.style = `background-image: url('${data.avatar}');`
 }
 
