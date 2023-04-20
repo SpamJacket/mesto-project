@@ -1,24 +1,25 @@
-import {
-  endpoints,
-  api,
-} from './constants';
-
 export default class UserInfo {
-  constructor({ nameSelector, aboutSelector }) {
+  constructor({ nameSelector, aboutSelector }, getUserDataHandler, editUserDataHandler) {
     this._nameElement = document.querySelector(nameSelector);
     this._aboutElement = document.querySelector(aboutSelector);
+    this._getUserDataHandler = getUserDataHandler;
+    this._editUserDataHandler = editUserDataHandler;
+    this._mainUserId = '';
+  }
+
+  set mainUserId(userId) {
+    this._mainUserId = userId;
+  }
+
+  get mainUserId() {
+    return this._mainUserId;
   }
 
   getUserInfo() {
-    return api.createGetFetch(endpoints.profile);
+    return this._getUserDataHandler();
   }
 
   setUserInfo({ name, about }) {
-    api.createProfileInfoPatchFetch(endpoints.profile, name, about)
-      .then(() => {
-        this._nameElement.textContent = name;
-        this._aboutElement.textContent = about;
-      })
-      .catch(err => console.log(err));
+    this._editUserDataHandler(name, about, this._nameElement, this._aboutElement);
   }
 }

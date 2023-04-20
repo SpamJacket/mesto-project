@@ -1,18 +1,10 @@
-import {
-  popupImg,
-  nameProfile,
-  endpoints,
-  popupAcceptDelete,
-} from './constants.js'
-
-const { likes: likesUrl } = endpoints;
-
 export default class Card {
-  constructor({ link, name, owner, likes, _id }, templateSelector, likeFetch) {
+  constructor({ link, name, owner, likes, _id }, templateSelector, mainUserId, likeFetch, popupImg, popupAcceptDelete) {
     this._templateSelector = templateSelector;
+    this._mainUserId = mainUserId;
     this._link = link;
     this._name = name;
-    this._owner = owner;
+    this._ownerId = owner._id;
     this._likes = likes.map(owner => owner._id);
     this._id = _id;
     this._likeFetch = likeFetch;
@@ -22,6 +14,8 @@ export default class Card {
     this._likeCardElement = this._cardElement.querySelector('.gallery__like');
     this._likeCounterCardElement = this._cardElement.querySelector('.gallery__like-counter');
     this._deleteCardElement = this._cardElement.querySelector('.gallery__delete-button');
+    this._popupAcceptDelete = popupAcceptDelete;
+    this._popupImg = popupImg;
 
     this._handleImageClick = this._handleImageClick.bind(this);
     this._handleLikeClick = this._handleLikeClick.bind(this);
@@ -38,11 +32,11 @@ export default class Card {
 
     this._likeCounterCardElement.textContent = this._likes.length;
 
-    if(this._likes.includes(nameProfile._userId)) {
+    if(this._likes.includes(this._mainUserId)) {
       this._likeCardElement.classList.add('gallery__like_active');
     }
 
-    if(this._owner._id !== nameProfile._userId) {
+    if(this._ownerId !== this._mainUserId) {
       this._deleteCardElement.remove();
     }
   }
@@ -54,23 +48,23 @@ export default class Card {
   }
 
   _handleImageClick() {
-    popupImg.openPopup(this._link, this._name);
+    this._popupImg.openPopup(this._link, this._name);
   }
 
   _handleLikeClick() {
-    if(!this._likes.includes(nameProfile._userId)) {
-      this._likeFetch(`${likesUrl}/${this._id}`, 'PUT')
+    if(!this._likes.includes(this._mainUserId)) {
+      this._likeFetch(this._id, 'PUT')
         .then(this._renderLike)
         .catch(err => console.log(err));
     } else {
-      this._likeFetch(`${likesUrl}/${this._id}`, 'DELETE')
+      this._likeFetch(this._id, 'DELETE')
         .then(this._renderLike)
         .catch(err => console.log(err));
     }
   }
 
   _handleDeleteClick() {
-    popupAcceptDelete.openPopup();
+    this._popupAcceptDelete.openPopup();
 
     sessionStorage.setItem('delete-card-id', this._id);
   }
