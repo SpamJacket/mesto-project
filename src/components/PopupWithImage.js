@@ -7,6 +7,7 @@ export default class PopupWithImage extends Popup {
     this._caption = this._popup.querySelector('.popup__caption');
   }
 
+  // Помимо открытия попапа устанавливается картинка и её подпись
   openPopup(link, name) {
     this._image.src = link;
     this._image.alt = name;

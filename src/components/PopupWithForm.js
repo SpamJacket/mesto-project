@@ -13,14 +13,17 @@ export default class PopupWithForm extends Popup {
     this.setInputsValues = this.setInputsValues.bind(this);
   }
 
+  // Геттер формы
   get form() {
     return this._form;
   }
 
+  // Геттер кнопки сабмита
   get submitButton() {
     return this._submitButton;
   }
 
+  // Получение данных из полей формы
   _getInputsValues() {
     return this._inputs.reduce((data, input) => {
       data[input.name] = input.value;
@@ -28,22 +31,26 @@ export default class PopupWithForm extends Popup {
     }, {});
   }
 
+  // Установка данных в поля ввода
   setInputsValues(data) {
     this._inputs.forEach(input => {
       input.value = data[input.name];
     });
   }
 
+  // Метод сабмита формы
   _submitHandler(evt) {
     this._submitForm(evt, this._getInputsValues());
   }
 
+  // Установка слушателей
   setEventListeners() {
     super.setEventListeners();
 
     this._form.addEventListener('submit', this._submitHandler);
   }
 
+  // Помимо просто закрытия ещй и очищает форму
   closePopup() {
     this._form.reset();
 

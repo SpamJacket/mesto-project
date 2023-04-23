@@ -9,12 +9,14 @@ export default class FormValidator {
 		this._inputs = Array.from(this._formElement.querySelectorAll(this._inputSelector));
 	}
 
+	// Проверка валидности полей ввода
 	_hasInvalidInput() {
 		return this._inputs.some((inputElement) => {
 			return !inputElement.validity.valid;
 		});
 	}
 
+	// Смена состояния кнопки сабмита
 	_toggleButtonState() {
 		if (!this._hasInvalidInput()) {
 			this._buttonElement.classList.remove(this._inactiveButtonClass);
@@ -25,24 +27,27 @@ export default class FormValidator {
 		}
 	}
 
+	// Показать ошибку
 	_showInputError(inputElement, errorMessage) {
-		this._errorElement = this._formElement.querySelector(`.${inputElement.id}-error`);
+		const errorElement = this._formElement.querySelector(`.${inputElement.id}-error`);
 		
 		inputElement.classList.add(this._inputErrorClass);
 
-		this._errorElement.textContent = errorMessage;
-		this._errorElement.classList.add(this._errorClass);
+		errorElement.textContent = errorMessage;
+		errorElement.classList.add(this._errorClass);
 	}
 
+	// Спрятать ошибку
 	_hideInputError(inputElement) {
-		this._errorElement = this._formElement.querySelector(`.${inputElement.id}-error`);
+		const errorElement = this._formElement.querySelector(`.${inputElement.id}-error`);
 		
 		inputElement.classList.remove(this._inputErrorClass);
 	
-		this._errorElement.textContent = '';
-		this._errorElement.classList.remove(this._errorClass);
+		errorElement.textContent = '';
+		errorElement.classList.remove(this._errorClass);
 	}
 
+	// Проверка валидности поля ввода
 	_checkInputValidity(inputElement) {
 		if (inputElement.validity.patternMismatch) {
 			inputElement.setCustomValidity(inputElement.dataset.textError);
@@ -57,6 +62,7 @@ export default class FormValidator {
 		}
 	}
 
+	// УКстановка слушателей полям ввода
 	_setEventListeners() {
 		this._toggleButtonState();
 		this._inputs.forEach(inputElement => {
@@ -67,12 +73,15 @@ export default class FormValidator {
 		});
 	}
 
+	// Основаной метод включающий валидацию форме
 	enableValidation() {
 		this._setEventListeners();
 	}
 
+	// Метод сбрасывающий валидацию (используется при открытии попапа)
 	resetEnableValidation() {
 		this._inputs.forEach(inputElement => {
+			this._checkInputValidity(inputElement);
 			this._hideInputError(inputElement);
 		});
 

@@ -4,17 +4,13 @@ import Api from '../components/Api.js';
 const page = document.querySelector('.page');
 const content = page.querySelector('.content');
 
-// Переменные для шаблона карточки и списка карточек
+// Кнопки открытия попапов редактирования профиля и добавления карточки
+const buttonOpenEditProfilePopup = content.querySelector('.profile__edit-button');
+const buttonOpenAddCardPopup = content.querySelector('.profile__add-button');
+
+// Переменные для селекторов шаблона карточки и списка карточек
 const templateSelector = '#gallery-item';
 const galleryListSelector = '.gallery__list';
-
-// Кнопки открытия попапов
-// редактирования аватара
-const buttonOpenAvatarPopup = content.querySelector('.profile__avatar');
-// редактирования профиля
-const buttonOpenEditProfilePopup = content.querySelector('.profile__edit-button');
-// добавления карточки
-const buttonOpenAddCardPopup = content.querySelector('.profile__add-button');
 
 // Объект настроек для валидации
 const validationConfig = {
@@ -25,7 +21,7 @@ const validationConfig = {
   errorClass: 'popup__input-error_active'
 };
 
-// Конфиг для создания fetch запросов
+// Конфиг для создания запросов
 const fetchConfig = {
   baseUrl: 'https://nomoreparties.co/v1/plus-cohort-22',
   headers: {
@@ -34,6 +30,7 @@ const fetchConfig = {
   }
 };
 
+// Объект с эндпоинтами для запросов
 const endpoints = {
   profile: '/users/me',
   cards: '/cards',
@@ -41,12 +38,13 @@ const endpoints = {
   likes: '/cards/likes'
 }
 
+// Экземляр класса Api
 const api = new Api(fetchConfig);
 
 export {
   page, content,
   templateSelector, galleryListSelector,
-  buttonOpenAvatarPopup, buttonOpenEditProfilePopup, buttonOpenAddCardPopup,
+  buttonOpenEditProfilePopup, buttonOpenAddCardPopup,
   validationConfig, endpoints, 
   api,
 };

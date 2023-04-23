@@ -1,6 +1,6 @@
 import './index.css';
 import {
-  buttonOpenAvatarPopup, buttonOpenEditProfilePopup, buttonOpenAddCardPopup,
+  buttonOpenEditProfilePopup, buttonOpenAddCardPopup,
   templateSelector, galleryListSelector,
   validationConfig, endpoints,
   api,
@@ -8,7 +8,7 @@ import {
 import {
   renderLoading,
   likeHandler,
-  getUserData, editUserData,
+  getUserData, editUserData, editAvatar,
   renderOpenPopup,
 } from '../utils/utils.js';
 import Card from '../components/Card.js';
@@ -18,6 +18,7 @@ import PopupWithImage from '../components/PopupWithImage.js';
 import FormValidator from '../components/FormValidator.js';
 import UserInfo from '../components/UserInfo.js';
 
+// Эндпоинты для запросов
 const { profile: profileUrl, cards: cardsUrl, avatar: avatarUrl } = endpoints;
 
 // Попапы
@@ -32,6 +33,7 @@ popupAcceptDelete.setEventListeners();
 const popupImg = new PopupWithImage('.popup_type_img');
 popupImg.setEventListeners();
 
+// Валидаторы форм
 const formEditAvatarValidator = new FormValidator(validationConfig, popupAvatar.form);
 formEditAvatarValidator.enableValidation();
 const formEditProfileValidator = new FormValidator(validationConfig, popupProfile.form);
@@ -39,7 +41,11 @@ formEditProfileValidator.enableValidation();
 const formAddCardValidator = new FormValidator(validationConfig, popupPlace.form);
 formAddCardValidator.enableValidation();
 
-const userInfo = new UserInfo({ nameSelector:'.profile__name', aboutSelector: '.profile__activity' }, getUserData, editUserData);
+// Экземпляр класса UserInfo
+const userInfo = new UserInfo(
+  { nameSelector:'.profile__name', aboutSelector: '.profile__activity', avatarSelector: '.profile__avatar' },
+  getUserData, editUserData, editAvatar
+);
 
 // Сохранение аватара
 function submitEditAvatarForm(evt, data) {
@@ -50,7 +56,7 @@ function submitEditAvatarForm(evt, data) {
 
   api.createAvatarPatchFetch(avatarUrl, data.avatar)
     .then((res) => {
-      buttonOpenAvatarPopup.style = `background-image: url("${res.avatar}")`;
+      userInfo.setAvatar(res);
 
       popupAvatar.closePopup();
     })
@@ -58,14 +64,13 @@ function submitEditAvatarForm(evt, data) {
     .finally(() => renderLoading(popupAvatar.submitButton, 'Сохранить'));
 }
 
-// Сохранение новых значений полей профиля
+// Сохранение данных профиля
 function submitEditProfileForm(evt, data) {
   evt.preventDefault();
 
   popupProfile.submitButton.disabled = true;
   renderLoading(popupProfile.submitButton, 'Сохранение...');
 
-  // Отправка на сервер новых данных о инофрмации в профиле
   api.createProfileInfoPatchFetch(profileUrl, data.name, data.about)
     .then((res) => {
       userInfo.setUserInfo(res);
@@ -83,7 +88,6 @@ function submitAddCardForm(evt, data) {
   popupPlace.submitButton.disabled = true;
   renderLoading(popupPlace.submitButton, 'Создание...');
 
-  // Отправка на сервер данных новой карточки
   api.createCardPostFetch(cardsUrl, data.title, data.link)
     .then(res => {
       addCard(res);
@@ -100,7 +104,6 @@ function submitDeleteCardForm(evt) {
 
   renderLoading(popupAcceptDelete.submitButton, 'Удаление...');
 
-  // Удаление с сервера карточки
   api.createCardDeleteFetch(`${cardsUrl}/${sessionStorage.getItem('delete-card-id')}`)
     .then(() => {
       deleteCard();
@@ -111,12 +114,14 @@ function submitDeleteCardForm(evt) {
     .finally(() => renderLoading(popupAcceptDelete.submitButton, 'Да'));
 }
 
+// Установка данных профиля и аватара
 function setProfileInfo(data) {
   userInfo.setUserInfo(data);
+  userInfo.setAvatar(data);
   userInfo.mainUserId = data._id;
-  buttonOpenAvatarPopup.style = `background-image: url('${data.avatar}');`
 }
 
+// Заполнение страницы контентом при закрузке 
 function initializePageData(urlProfileData, urlCards) {
   Promise.all([
     // Получим данные профиля с сервера
@@ -131,24 +136,29 @@ function initializePageData(urlProfileData, urlCards) {
     .catch(err => console.log(err));
 }
 
-// Добавление карточки в список с её созданием при добавлении пользователем
+// Создание карточки
+function createCardElement(item) {
+  const card = new Card(item, templateSelector, userInfo.mainUserId, likeHandler, popupImg, popupAcceptDelete);
+  return card.createCard();
+}
+
+// Преэкземпляр класса Section
+let section;
+
+// Добавление карточки в список при добавлении пользователем
 function addCard(cardData) {
-  const section = new Section({ items: [cardData], renderer: (item) => {
-    const card = new Card(item, templateSelector, userInfo.mainUserId, likeHandler, popupImg, popupAcceptDelete);
-    section.addItemReverse(card.createCard());
-  } }, galleryListSelector);
-  section.renderItems();
+  section.addItemReverse(createCardElement(cardData));
 }
 
-// Добавление карточки в список с её созданием при загрузке страницы
+// Добавление карточки в список с при загрузке страницы
 function addInitialCards(cards) {
-  const section = new Section({ items: cards, renderer: (item) => {
-    const card = new Card(item, templateSelector, userInfo.mainUserId, likeHandler, popupImg, popupAcceptDelete);
-    section.addItem(card.createCard());
+  section = new Section({ items: cards, renderer: (item) => {
+    section.addItem(createCardElement(item));
   } }, galleryListSelector);
   section.renderItems();
 }
 
+// Удаление карточки
 function deleteCard() {
   document.getElementById(sessionStorage.getItem('delete-card-id')).remove();
   sessionStorage.removeItem('delete-card-id');
@@ -156,11 +166,10 @@ function deleteCard() {
 
 // Основная функция запускающая все
 function main(){
-  // Получим с сервера и отобразим данные профиля и карточки
   initializePageData(profileUrl, cardsUrl);
 
   // Добавление события аватару открытия попапа по  клику
-  buttonOpenAvatarPopup.addEventListener('click', () => renderOpenPopup(popupAvatar, formEditAvatarValidator));
+  userInfo.editAvatarButton.addEventListener('click', () => renderOpenPopup(popupAvatar, formEditAvatarValidator));
 
   // Добавление события кнопке редактирования профиля для открытия попапа по клику
   buttonOpenEditProfilePopup.addEventListener('click', () => {

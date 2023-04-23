@@ -23,6 +23,7 @@ export default class Card {
     this._renderLike = this._renderLike.bind(this);
   }
 
+  // Рендер содержимого карточки
   _renderCardElement() {
     this._cardElement.id = this._id;
 
@@ -41,16 +42,19 @@ export default class Card {
     }
   }
 
+  // Установка слушателей
   _setEventListeners() {
     this._imageCardElement.addEventListener('click', this._handleImageClick);
     this._likeCardElement.addEventListener('click', this._handleLikeClick);
     this._deleteCardElement.addEventListener('click', this._handleDeleteClick);
   }
 
+  // Открытие попапа картинки
   _handleImageClick() {
     this._popupImg.openPopup(this._link, this._name);
   }
 
+  // Удаление или установка лайка
   _handleLikeClick() {
     if(!this._likes.includes(this._mainUserId)) {
       this._likeFetch(this._id, 'PUT')
@@ -63,12 +67,14 @@ export default class Card {
     }
   }
 
+  // Открытие попапа удаления
   _handleDeleteClick() {
     this._popupAcceptDelete.openPopup();
 
     sessionStorage.setItem('delete-card-id', this._id);
   }
 
+  // Ренедер лайка
   _renderLike(card) {
     this._likes = card.likes.map(owner => owner._id);
     this._likeCounterCardElement.textContent = this._likes.length;
@@ -76,6 +82,7 @@ export default class Card {
     this._likeCardElement.classList.toggle('gallery__like_active');
   }
 
+  // Оснавной метод класса создающий элемент карточки
   createCard() {
     this._renderCardElement();
     this._setEventListeners();
